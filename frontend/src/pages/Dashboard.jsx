@@ -1,10 +1,53 @@
 import React, { useState } from 'react';
 
+// Certification Modal Component
+const CertificationModal = ({ isOpen, onClose, message, formLink }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 border-4 border-gray-900">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-900">🎓 Get Your Certificate</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+        
+        <p className="text-gray-700 mb-6 leading-relaxed">{message}</p>
+        
+        {formLink && (
+          <a
+            href={formLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-center transition duration-300 mb-3"
+          >
+            Fill Certification Form
+          </a>
+        )}
+        
+        <button
+          onClick={onClose}
+          className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // Main App Component
 export default function StudentDashboard() {
-  // Only need 'resume' as the active tab now, but keeping the state structure for sidebar visibility/future expansion
   const [activeTab, setActiveTab] = useState('resume');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showCertificationModal, setShowCertificationModal] = useState(false);
+  const [certificationMessage] = useState('Complete your learning journey by applying for your certificate of completion! Fill out the form below and receive your certificate via email.');
+  const [certificationFormLink] = useState('https://forms.gle/89ryx5JxeydBChAf9');
 
   // Resume State (ATS-friendly data structure)
   const [resume, setResume] = useState({
@@ -70,10 +113,8 @@ export default function StudentDashboard() {
   // Function to simulate PDF download/print (ATS-friendly format)
   const downloadResumePDF = () => {
     const element = document.getElementById('resume-preview');
-    // We create a temporary print window to ensure clean printing of only the resume content
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write('<html><head><title>Resume - ' + resume.fullName + '</title>');
-    // Include Tailwind's basic reset for print view and ATS-friendly styling, maintaining B&W style
     printWindow.document.write('<style>body { font-family: Inter, sans-serif; margin: 0; padding: 0; color: #1f2937; } .ats-resume { padding: 3rem; max-width: 8.5in; margin: 0 auto; } .section-title { border-bottom: 2px solid #1f2937; padding-bottom: 0.25rem; margin-top: 1rem; margin-bottom: 0.75rem; font-size: 1.25rem; font-weight: 700; color: #1f2937; } .job-title { font-weight: 700; color: #1f2937; } .job-details { font-style: italic; color: #4b5563; font-size: 0.875rem; } .job-description-list { list-style-type: disc; margin-left: 1.5rem; font-size: 0.875rem; color: #374151; }</style>');
     printWindow.document.write('</head><body>');
     printWindow.document.write(element.innerHTML);
@@ -82,34 +123,8 @@ export default function StudentDashboard() {
     printWindow.print();
   };
 
-  // Custom message box function (replaces alert() with B&W style)
-  // Re-added for the general application logic/error handling, although not strictly needed for this specific feature.
-  const showModalMessage = (title, message, isError = true) => {
-    const existingModal = document.getElementById('custom-modal-overlay');
-    if (existingModal) existingModal.remove();
-
-    const modal = document.createElement('div');
-    modal.id = 'custom-modal-overlay';
-    modal.className = "fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50";
-    
-    const titleColor = isError ? 'text-red-700' : 'text-gray-900';
-
-    modal.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-2xl w-full max-w-sm text-center border-4 border-gray-900">
-        <h3 class="text-xl font-bold ${titleColor} mb-4">${title}</h3>
-        <p class="text-gray-700 mb-6">${message}</p>
-        <button id="close-modal" class="bg-gray-900 hover:bg-black text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">OK</button>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    document.getElementById('close-modal').onclick = () => document.body.removeChild(modal);
-  };
-  
-  // Since we only have one section, we ensure the activeTab is always 'resume'
-  if (activeTab !== 'resume') setActiveTab('resume');
-
-
   return (
+    <>
     <div className="flex h-screen bg-white font-sans text-gray-900">
       
       {/* Sidebar - High Contrast Black */}
@@ -122,8 +137,17 @@ export default function StudentDashboard() {
         </div>
 
         <nav className="flex-1 space-y-2 p-4 pt-6">
-          {/* Only Resume Builder tab remains */}
+          {/* Resume Builder tab */}
           <TabButton icon="📄" label="Resume Builder" currentTab="resume" activeTab={activeTab} setActiveTab={setActiveTab} sidebarOpen={sidebarOpen} />
+          
+          {/* Get Certification tab */}
+          <button
+            onClick={() => setShowCertificationModal(true)}
+            className="w-full flex items-center gap-3 p-3 rounded-xl transition duration-200 hover:bg-gray-800 text-gray-300"
+          >
+            <span className="text-2xl">🎓</span>
+            {sidebarOpen && <span className="text-sm font-medium">Get Certification</span>}
+          </button>
         </nav>
       </div>
 
@@ -131,10 +155,11 @@ export default function StudentDashboard() {
       <div className="flex-1 overflow-auto bg-gray-50">
         <div className="p-4 md:p-8">
           
-          {/* Resume Builder Tab Content (Always visible) */}
+          {/* Resume Builder Tab Content */}
           {activeTab === 'resume' && (
             <div className="space-y-6">
               <h2 className="text-4xl font-extrabold text-gray-900 mb-8 border-b-2 border-gray-900 pb-2">Resume Builder</h2>
+
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
@@ -284,7 +309,6 @@ export default function StudentDashboard() {
                               <p className="job-details text-sm italic text-gray-600">{exp.duration}</p>
                             </div>
                             <ul className="job-description-list mt-1 list-disc ml-5 text-sm text-gray-700 space-y-1">
-                              {/* Use line breaks to create list items for ATS */}
                               {exp.description.split('\n').map((line, i) => (
                                 line.trim() && <li key={i}>{line}</li>
                               ))}
@@ -323,6 +347,15 @@ export default function StudentDashboard() {
         </div>
       </div>
     </div>
+    
+    {/* Certification Modal */}
+    <CertificationModal
+      isOpen={showCertificationModal}
+      onClose={() => setShowCertificationModal(false)}
+      message={certificationMessage}
+      formLink={certificationFormLink}
+    />
+    </>
   );
 }
 

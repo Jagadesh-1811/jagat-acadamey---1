@@ -5,16 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { serverUrl } from "../../App";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 const CreateCourse = () => {
     let navigate = useNavigate()
     let [loading,setLoading]=useState(false)
     const [title,setTitle] = useState("")
     const [category,setCategory] = useState("")
+    const { token } = useSelector(state => state.user);
 
     const CreateCourseHandler = async () => {
         setLoading(true)
         try {
-            const result = await axios.post(serverUrl + "/api/course/create" , {title , category} , {withCredentials:true})
+            const result = await axios.post(serverUrl + "/api/course/create" , {title , category} , { headers: { Authorization: `Bearer ${token}` } })
             console.log(result.data)
             toast.success("Course Created")
             navigate("/courses")

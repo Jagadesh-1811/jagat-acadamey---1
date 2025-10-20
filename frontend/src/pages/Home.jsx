@@ -1,6 +1,7 @@
 import React from 'react'
 import home from "../assets/home1.jpg"
 import Nav from '../components/Nav'
+import StreakCounter from '../components/StreakCounter';
 import { SiViaplay } from "react-icons/si";
 import Logos from '../components/Logos';
 import Cardspage from '../components/Cardspage';
@@ -11,6 +12,7 @@ import ai1 from '../assets/SearchAi.png'
 import ReviewPage from '../components/ReviewPage';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import AIChatbot from '../components/AIChatbot';
 function Home() {
       const navigate = useNavigate()
 
@@ -22,6 +24,9 @@ function Home() {
       
       <div className='w-[100%] lg:h-[140vh] h-[70vh] relative'>
         <Nav/>
+        <div className='absolute top-4 right-4 z-10'>
+          <StreakCounter />
+        </div>
         <img src={home} className='object-cover md:object-fill   w-[100%] lg:h-[100%] h-[50vh]' alt="" />
         <span className='lg:text-[70px] absolute  md:text-[40px]  lg:top-[10%] top-[15%] w-[100%] flex items-center justify-center text-white font-bold text-[20px] '>
           Grow Your Skills to Advance 
@@ -41,9 +46,9 @@ function Home() {
       <About/>
       <ReviewPage/>
       <Footer/>
-
       
-      
+      {/* AI Chatbot - Only on Home Page */}
+      <AIChatbot />
       
     </div>
 

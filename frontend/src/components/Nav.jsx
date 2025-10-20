@@ -9,7 +9,7 @@ import { serverUrl } from '../App';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserData } from '../redux/userSlice';
+import { setUserData, setToken } from '../redux/userSlice';
 function Nav() {
   let [showHam,setShowHam] = useState(false)
   let [showPro,setShowPro] = useState(false)
@@ -19,12 +19,13 @@ function Nav() {
 
   const handleLogout = async () => {
     try {
-      const result = await axios.get(serverUrl + "/api/auth/logout" , {withCredentials:true})
-      console.log(result.data)
-     await dispatch(setUserData(null))
+      dispatch(setUserData(null))
+      dispatch(setToken(null))
+      localStorage.removeItem('token');
       toast.success("LogOut Successfully")
     } catch (error) {
-      console.log(error.response.data.message)
+      console.log(error)
+      toast.error("Logout failed")
     }
   }
   return (

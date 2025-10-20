@@ -10,14 +10,24 @@ import { setSelectedCourseData } from '../redux/courseSlice';
 import { FaLock, FaPlayCircle } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { FaStar } from "react-icons/fa6";
+import { ClipLoader } from 'react-spinners';
 
+const getGradeColor = (grade, isBackground = false) => {
+    switch (grade) {
+        case 'A': return isBackground ? '#D4EDDA' : '#28A745'; // Green
+        case 'B': return isBackground ? '#CCE5FF' : '#007BFF'; // Blue
+        case 'C': return isBackground ? '#FFF3CD' : '#FFC107'; // Yellow
+        case 'D': return isBackground ? '#F8D7DA' : '#DC3545'; // Red
+        default: return isBackground ? '#E2E6EA' : '#6C757D'; // Gray
+    }
+};
 
 function ViewCourse() {
 
       const { courseId } = useParams();
       const navigate = useNavigate()
     const {courseData} = useSelector(state=>state.course)
-    const {userData} = useSelector(state=>state.user)
+    const {userData, token} = useSelector(state=>state.user)
     const [creatorData , setCreatorData] = useState(null)
     const dispatch = useDispatch()
     const [selectedLecture, setSelectedLecture] = useState(null);
@@ -28,7 +38,11 @@ function ViewCourse() {
    const [rating, setRating] = useState(0);
    const [comment, setComment] = useState("");
    const [submissionLinks, setSubmissionLinks] = useState({});
-
+   const [studentSubmissionsWithGrades, setStudentSubmissionsWithGrades] = useState([]);
+   const [courseMaterials, setCourseMaterials] = useState([]);
+   const [fetchingMaterials, setFetchingMaterials] = useState(true);
+   const [courseQuizzes, setCourseQuizzes] = useState([]);
+   const [doubtSession, setDoubtSession] = useState(null);
 
   const handleAssignmentSubmit = async (assignmentId) => {
     try {
@@ -40,11 +54,12 @@ function ViewCourse() {
         const { data } = await axios.post(
             `${serverUrl}/api/submission/submit`,
             { assignmentId, submissionLink },
-            { withCredentials: true }
+            { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success(data.message);
     } catch (error) {
-        toast.error(error.response.data.message);
+        console.error("Error submitting assignment:", error);
+        toast.error(error.response?.data?.message || error.message || "An unexpected error occurred.");
     }
 };
 
@@ -54,8 +69,12 @@ function ViewCourse() {
 
 
   const handleReview = async () => {
+    if (rating === 0) {
+      toast.error("Please provide a rating (1-5 stars).");
+      return;
+    }
     try {
-      const result = await axios.post(serverUrl + "/api/review/givereview" , {rating , comment , courseId} , {withCredentials:true})
+      const result = await axios.post(serverUrl + "/api/review/givereview" , {rating , comment , courseId} , { headers: { Authorization: `Bearer ${token}` } })
       toast.success("Review Added")
       console.log(result.data)
       setRating(0)
@@ -83,7 +102,7 @@ console.log("Average Rating:", avgRating);
 
   const fetchCourseData = async () => {
     courseData.map((item) => {
-      if (item._id === courseId) {
+      if (item && item._id === courseId) {
       dispatch(setSelectedCourseData(item))
         console.log(selectedCourseData)
       
@@ -96,7 +115,7 @@ console.log("Average Rating:", avgRating);
   }
     const checkEnrollment = () => {
   const verify = userData?.enrolledCourses?.some(c => {
-    const enrolledId = typeof c === 'string' ? c : c._id;
+    const enrolledId = (c && typeof c === 'object') ? c._id : c;
     return enrolledId?.toString() === courseId?.toString();
   });
 
@@ -108,7 +127,72 @@ console.log("Average Rating:", avgRating);
   useEffect(() => {
     fetchCourseData()
     checkEnrollment()
-  }, [courseId,courseData,lectureData])
+  }, [courseId,courseData,lectureData,userData])
+
+  useEffect(() => {
+    const fetchStudentGrades = async () => {
+      if (userData?._id && courseId) {
+        try {
+          const result = await axios.get(`${serverUrl}/api/grade/student`, { headers: { Authorization: `Bearer ${token}` } });
+          // Filter grades for the current course
+          const gradesForCurrentCourse = result.data.grades.filter(grade => 
+            grade.submission?.assignment?.course?._id === courseId
+          );
+          setStudentSubmissionsWithGrades(gradesForCurrentCourse);
+        } catch (error) {
+          console.error("Error fetching student grades:", error);
+          toast.error(error.response?.data?.message || "Failed to fetch student grades.");
+        }
+      }
+    };
+
+    const fetchCourseMaterials = async () => {
+      if (isEnrolled) {
+        try {
+          setFetchingMaterials(true);
+          const response = await axios.get(`${serverUrl}/api/material/course/${courseId}/materials`, { headers: { Authorization: `Bearer ${token}` } });
+          setCourseMaterials(response.data);
+        } catch (error) {
+          console.error("Error fetching course materials:", error);
+          toast.error(error.response?.data?.message || "Failed to fetch course materials.");
+        } finally {
+          setFetchingMaterials(false);
+        }
+      }
+    };
+
+    const fetchCourseQuizzes = async () => {
+      if (isEnrolled) { // Only fetch quizzes if enrolled
+        try {
+          const response = await axios.get(`${serverUrl}/api/quiz/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
+          setCourseQuizzes(response.data.quizzes);
+        } catch (error) {
+          console.error("Error fetching course quizzes:", error);
+          toast.error(error.response?.data?.message || "Failed to fetch course quizzes.");
+        }
+      }
+    };
+
+    const fetchDoubtSession = async () => {
+      if (isEnrolled) { // Only fetch doubt session if enrolled
+        try {
+          const response = await axios.get(`${serverUrl}/api/doubt-session/doubt-session/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
+          setDoubtSession(response.data[0]);
+        } catch (error) {
+          console.error("Error fetching doubt session:", error);
+          // Don't show toast for 404, as it means no session is set yet
+          if (error.response?.status !== 404) {
+            toast.error(error.response?.data?.message || "Failed to fetch doubt session.");
+          }
+        }
+      }
+    };
+
+    fetchStudentGrades();
+    fetchCourseMaterials();
+    fetchCourseQuizzes();
+    fetchDoubtSession();
+  }, [courseId, userData?._id, isEnrolled, token]);
 
 
     // Fetch creator info once course data is available
@@ -119,7 +203,7 @@ console.log("Average Rating:", avgRating);
           const result = await axios.post(
             `${serverUrl}/api/course/getcreator`,
             { userId: selectedCourseData.creator },
-            { withCredentials: true }
+            { headers: { Authorization: `Bearer ${token}` } }
           );
           setCreatorData(result.data);
           console.log(result.data)
@@ -132,7 +216,7 @@ console.log("Average Rating:", avgRating);
     getCreator();
 
     
-  }, [selectedCourseData]);
+  }, [selectedCourseData, token]);
 
 
    
@@ -142,7 +226,7 @@ console.log("Average Rating:", avgRating);
   if (creatorData?._id && courseData.length > 0) {
     const creatorCourses = courseData.filter(
       (course) =>
-        course.creator === creatorData._id && course._id !== courseId // Exclude current course
+        course.creator === creatorData._id && course && course._id !== courseId // Exclude current course
     );
     setSelectedCreatorCourse(creatorCourses);
   
@@ -151,12 +235,16 @@ console.log("Average Rating:", avgRating);
 
  
 const handleEnroll = async (courseId, userId) => {
+  if (!userId) {
+    toast.error("Please log in to enroll in the course.");
+    return;
+  }
   try {
     // 1. Create Order
     const orderData = await axios.post(serverUrl + "/api/payment/create-order", {
       courseId,
       userId
-    } , {withCredentials:true});
+    } , { headers: { Authorization: `Bearer ${token}` } });
     console.log(orderData)
 
     const options = {
@@ -173,10 +261,13 @@ const handleEnroll = async (courseId, userId) => {
   ...response,       
   courseId,
   userId
-}, { withCredentials: true });
+}, { headers: { Authorization: `Bearer ${token}` } });
     
 setIsEnrolled(true)
     toast.success(verifyRes.data.message);
+    // Re-fetch user data to update enrolledCourses in Redux store
+    const updatedUserResult = await axios.get(serverUrl + "/api/user/currentuser" , { headers: { Authorization: `Bearer ${token}` } })
+    dispatch(setUserData(updatedUserResult.data))
   } catch (verifyError) {
     toast.error("Payment verification failed.");
     console.error("Verification Error:", verifyError);
@@ -238,17 +329,22 @@ setIsEnrolled(true)
             </ul>
 
             {/* Enroll Button */}
-            {!isEnrolled ?<button className="bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3" onClick={()=>handleEnroll(courseId , userData._id)}>
-              Enroll Now
-            </button> :
-            <button className="bg-green-200 text-green-600 px-6 py-2 rounded hover:bg-gray-100 hover:border mt-3" onClick={()=>navigate(`/viewlecture/${courseId}`)}>
-             Watch Now
-            </button>
-            }
-          </div>
-        </div>
+                  {!isEnrolled ?<button className="bg-[black] text-white px-6 py-2 rounded hover:bg-gray-700 mt-3" onClick={()=>handleEnroll(courseId , userData?._id)}>
+                    Enroll Now
+                  </button> :
+                  <button className="bg-green-200 text-green-600 px-6 py-2 rounded hover:bg-gray-100 hover:border mt-3" onClick={()=>navigate(`/viewlecture/${courseId}`)}>
+                   Watch Now
+                  </button>
+                  }
+                  {isEnrolled && doubtSession && (
+                    <a href={doubtSession.meetingLink} target="_blank" rel="noopener noreferrer" className="bg-purple-500 text-white px-6 py-2 rounded hover:bg-purple-700 mt-3 ml-2">
+                        Doubt Solving Session
+                    </a>
+                  )}
+                  </div>
+                </div>
 
-        {/* What You'll Learn */}
+                {/* What You'll Learn */}
         <div>
           <h2 className="text-xl font-semibold mb-2">What You’ll Learn</h2>
           <ul className="list-disc pl-6 text-gray-700 space-y-1">
@@ -274,29 +370,104 @@ setIsEnrolled(true)
         {isEnrolled && (
     <div>
         <h2 className="text-xl font-semibold mb-2">Assignments</h2>
-        {selectedCourseData?.assignments?.map((assignment) => (
-            <div key={assignment._id} className="border p-4 rounded-lg mb-4">
-                <h3 className="text-lg font-semibold">{assignment.title}</h3>
-                <p className="text-gray-600">{assignment.description}</p>
-                <p className="text-sm text-gray-500">Deadline: {new Date(assignment.deadline).toLocaleDateString()}</p>
-                <div className="mt-4">
-                    <input
-                        type="text"
-                        placeholder="Enter your submission link"
-                        className="w-full border border-gray-300 rounded-lg p-2"
-                        onChange={(e) => setSubmissionLinks(prev => ({ ...prev, [assignment._id]: e.target.value }))}
-                    />
-                    <button
-                        className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
-                        onClick={() => handleAssignmentSubmit(assignment._id)}
-                    >
-                        Submit
-                    </button>
+        {selectedCourseData?.assignments?.map((assignment) => {
+            if (!assignment) return null;
+
+            const studentGrade = studentSubmissionsWithGrades.find(
+                (gradeEntry) => gradeEntry.submission?.assignment?._id === assignment._id
+            );
+
+            return (
+                <div key={assignment._id} className="border p-4 rounded-lg mb-4">
+                    <h3 className="text-lg font-semibold">{assignment.title}</h3>
+                    <p className="text-gray-600">{assignment.description}</p>
+                    <p className="text-sm text-gray-500">Deadline: {new Date(assignment.deadline).toLocaleString()}</p>
+
+                    {studentGrade ? (
+                        <div className="mt-4 p-3 rounded-md"
+                            style={{ backgroundColor: getGradeColor(studentGrade.grade, true) }}>
+                            <p className="font-semibold">Your Grade: <span style={{ color: getGradeColor(studentGrade.grade) }}>{studentGrade.grade}</span></p>
+                            <p className="text-gray-700">Feedback: {studentGrade.feedback}</p>
+                        </div>
+                    ) : (
+                        <div className="mt-4">
+                            <input
+                                type="text"
+                                placeholder="Enter your submission link"
+                                className="w-full border border-gray-300 rounded-lg p-2"
+                                onChange={(e) => setSubmissionLinks(prev => ({ ...prev, [assignment._id]: e.target.value }))}
+                            />
+                            <button
+                                className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
+                                onClick={() => handleAssignmentSubmit(assignment._id)}
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    )}
                 </div>
-            </div>
-        ))}
+            );
+        })}
+
+        {/* Course Materials Section */}
+        <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-2">Course Materials</h2>
+            {fetchingMaterials ? (
+                <div className="flex justify-center items-center h-20">
+                    <ClipLoader size={30} color='#000' />
+                </div>
+            ) : courseMaterials.length === 0 ? (
+                <p className="text-gray-600">No materials available for this course yet.</p>
+            ) : (
+                <ul className="space-y-3">
+                    {courseMaterials.map((material) => (
+                        <li key={material._id} className="flex items-center justify-between p-3 border rounded-md bg-gray-50">
+                            <div>
+                                <p className="font-medium">{material.title}</p>
+                                <p className="text-sm text-gray-500">{material.fileType} - {(material.fileSize / 1024).toFixed(2)} KB</p>
+                            </div>
+                            <a
+                                href={material.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                download={material.title} // Added download attribute
+                                className="text-blue-600 hover:underline text-sm"
+                            >
+                                Download
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
     </div>
 )}
+
+        {/* Course Quizzes Section */}
+        {isEnrolled && courseQuizzes.length > 0 && (
+            <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-2">Course Quizzes</h2>
+                <ul className="space-y-3">
+                    {courseQuizzes.map((quiz) => (
+                        <li key={quiz._id} className="flex items-center justify-between p-3 border rounded-md bg-gray-50">
+                            <div>
+                                <p className="font-medium">{quiz.instructions}</p>
+                                <p className="text-sm text-gray-500">Scheduled: {new Date(quiz.schedule).toLocaleString()}</p>
+                                <p className="text-sm text-gray-500">Rewards: {quiz.rewards}</p>
+                            </div>
+                            <a
+                                href={quiz.quizLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline text-sm"
+                            >
+                                Take Quiz
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )}
 
         {/* course lecture   */}
          <div className="flex flex-col md:flex-row gap-6">
@@ -408,10 +579,9 @@ setIsEnrolled(true)
         <div className='w-full transition-all duration-300 py-[20px]   flex items-start justify-center lg:justify-start flex-wrap gap-6 lg:px-[80px] '>
           
             {
-                selectedCreatorCourse?.map((item,index)=>(
-                    <Card key={index} thumbnail={item.thumbnail} title={item.title} id={item._id} price={item.price} category={item.category}/>
-                ))
-            }
+                                selectedCreatorCourse?.map((item,index)=>( item &&
+                                    <Card key={index} thumbnail={item.thumbnail} title={item.title} id={item._id} price={item.price} category={item.category}/>
+                                ))            }
         </div>
       </div>
     </div>

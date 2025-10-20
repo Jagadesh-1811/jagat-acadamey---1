@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { FaArrowLeftLong } from "react-icons/fa6";
 
 function EditProfile() {
-     let {userData} = useSelector(state=>state.user)
+     let {userData, token} = useSelector(state=>state.user)
      let [name,setName] = useState(userData.name || "")
      let [description,setDescription] = useState(userData.description || "")
      let [photoUrl,setPhotoUrl] = useState(null)
@@ -27,7 +27,7 @@ function EditProfile() {
      const updateProfile = async () => {
       setLoading(true)
       try {
-        const result = await axios.post(serverUrl + "/api/user/updateprofile" ,formData , {withCredentials:true} )
+        const result = await axios.post(serverUrl + "/api/user/updateprofile" ,formData , { headers: { Authorization: `Bearer ${token}` } } )
         console.log(result.data)
         dispatch(setUserData(result.data))
         navigate("/")

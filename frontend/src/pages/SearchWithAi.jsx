@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
 import ai from "../assets/ai.png"
 import ai1 from "../assets/SearchAi.png"
-import { RiMicAiFill } from "react-icons/ri";
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { serverUrl } from '../App';
 import { useNavigate } from 'react-router-dom';
 import start from "../assets/start.mp3"
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { RiMicAiFill } from "react-icons/ri";
 function SearchWithAi() {
   const [input, setInput] = useState('');
   const [recommendations, setRecommendations] = useState([]);
   const [listening,setListening] = useState(false)
   const navigate = useNavigate();
   const startSound = new Audio(start)
+  const { token } = useSelector(state => state.user);
+
   function speak(message) {
     let utterance = new SpeechSynthesisUtterance(message);
     window.speechSynthesis.speak(utterance);
@@ -36,19 +39,20 @@ function SearchWithAi() {
       setInput(transcript);
       await handleRecommendation(transcript);
     };
-  
-      
-    
   };
 
   const handleRecommendation = async (query) => {
     try {
-      const result = await axios.post(`${serverUrl}/api/ai/search`, { input: query }, { withCredentials: true });
+      const result = await axios.post(`${serverUrl}/api/ai/search`, { input: query }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setRecommendations(result.data);
       if(result.data.length>0){
- speak("These are the top courses I found for you")
+        speak("These are the top courses I found for you")
       }else{
-         speak("No courses found")
+        speak("No courses found")
       }
      
       setListening(false)

@@ -1,4 +1,4 @@
-import uploadOnCloudinary from "../configs/cloudinary.js";
+import mongoose from 'mongoose';
 import Course from "../models/courseModel.js"
 import Lecture from "../models/lectureModel.js"
 import User from "../models/userModel.js"
@@ -58,7 +58,7 @@ export const getCreatorCourses = async (req,res) => {
 export const editCourse = async (req,res) => {
     try {
         const {courseId} = req.params;
-        const {title , subTitle , description , category , level , price , isPublished } = req.body;
+        let {title , subTitle , description , category , level , price , isPublished } = req.body;
         let thumbnail
          if(req.file){
             thumbnail =await uploadOnCloudinary(req.file.path)
@@ -67,6 +67,12 @@ export const editCourse = async (req,res) => {
         if(!course){
             return res.status(404).json({message:"Course not found"})
         }
+
+        // If level is an empty string, set it to undefined so Mongoose doesn't try to validate it against the enum
+        if (level === '') {
+            level = undefined;
+        }
+
         const updateData = {title , subTitle , description , category , level , price , isPublished ,thumbnail}
 
         course = await Course.findByIdAndUpdate(courseId , updateData , {new:true})
@@ -124,6 +130,10 @@ export const createLecture = async (req,res) => {
         if(course){
             course.lectures.push(lecture._id)
             
+            // Check if course.level is an empty string and set it to undefined
+            if (course.level === '') {
+                course.level = undefined;
+            }
         }
         await course.populate("lectures")
         await course.save()
@@ -218,6 +228,25 @@ export const getCreatorById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     res.status(500).json({ message: "get Creator error" });
+  }
+};
+
+export const getLectureById = async (req, res) => {
+  try {
+    const { lectureId } = req.params;
+    if (!lectureId || !mongoose.Types.ObjectId.isValid(lectureId)) {
+      return res.status(400).json({ message: "Valid Lecture ID is required" });
+    }
+    const lecture = await Lecture.findById(lectureId);
+
+    if (!lecture) {
+      return res.status(404).json({ message: "Lecture not found" });
+    }
+
+    res.status(200).json(lecture);
+  } catch (error) {
+    console.error("Error fetching lecture by ID:", error);
+    res.status(500).json({ message: "Failed to get lecture" });
   }
 };
 

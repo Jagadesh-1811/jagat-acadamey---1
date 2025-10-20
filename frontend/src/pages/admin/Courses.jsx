@@ -16,11 +16,12 @@ function Courses() {
   let dispatch = useDispatch()
 
   const { creatorCourseData } = useSelector(state => state.course)
+  const { token } = useSelector(state => state.user);
 
   useEffect(() => {
     const getCreatorData = async () => {
       try {
-        const result = await axios.get(serverUrl + "/api/course/getcreatorcourses", { withCredentials: true })
+        const result = await axios.get(serverUrl + "/api/course/getcreatorcourses", { headers: { Authorization: `Bearer ${token}` } })
 
         await dispatch(setCreatorCourseData(result.data))
 
@@ -34,7 +35,7 @@ function Courses() {
 
     }
     getCreatorData()
-  }, [])
+  }, [token])
 
 
 
@@ -87,7 +88,10 @@ function Courses() {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <FaEdit className="text-gray-600 hover:text-blue-600 cursor-pointer" onClick={() => navigate(`/addcourses/${course?._id}`)} />
+                    <div className="flex items-center gap-2">
+                      <FaEdit className="text-gray-600 hover:text-blue-600 cursor-pointer" onClick={() => navigate(`/addcourses/${course?._id}`)} />
+                      <button onClick={() => navigate(`/admin/create-doubt-session/${course?._id}`)} className="bg-blue-500 text-white px-2 py-1 rounded text-xs">Create Doubt Session</button>
+                    </div>
                   </td>
                 </tr>
               ))

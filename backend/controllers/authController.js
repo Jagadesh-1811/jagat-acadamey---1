@@ -32,13 +32,7 @@ export const signUp=async (req,res)=>{
            
             })
         let token = await genToken(user._id)
-        res.cookie("token",token,{
-            httpOnly:true,
-            secure:false,
-            sameSite: "Strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-        return res.status(201).json(user)
+        return res.status(201).json({user, token})
 
     } catch (error) {
         console.log("signUp error")
@@ -55,16 +49,10 @@ export const login=async(req,res)=>{
         }
         let isMatch =await bcrypt.compare(password, user.password)
         if(!isMatch){
-            return res.status(400).json({message:"incorrect Password"})
+            return res.status(400).json({message:"Invalid password"})
         }
-        let token =await genToken(user._id)
-        res.cookie("token",token,{
-            httpOnly:true,
-            secure:false,
-            sameSite: "Strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-        return res.status(200).json(user)
+        let token = await genToken(user._id)
+        return res.status(200).json({user, token})
 
     } catch (error) {
         console.log("login error")
@@ -94,14 +82,8 @@ export const googleSignup = async (req,res) => {
             name , email ,role
         })
         }
-        let token =await genToken(user._id)
-        res.cookie("token",token,{
-            httpOnly:true,
-            secure:false,
-            sameSite: "Strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-        return res.status(200).json(user)
+        let token = await genToken(user._id)
+        return res.status(200).json({user, token})
 
 
     } catch (error) {

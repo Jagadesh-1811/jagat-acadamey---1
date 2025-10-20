@@ -19,6 +19,10 @@ const submissionSchema = new mongoose.Schema({
     submittedAt: {
         type: Date,
         default: Date.now
+    },
+    grade: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Grade'
     }
 });
 

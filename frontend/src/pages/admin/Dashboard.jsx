@@ -6,37 +6,114 @@ import { useNavigate } from 'react-router-dom';
 import { FaArrowLeftLong } from "react-icons/fa6";
 import axios from 'axios';
 import { serverUrl } from '../../App';
+import { ClipLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import QuizManager from './QuizManager';
+
+
+
+const getGradeColor = (grade, isBackground = false) => {
+    switch (grade) {
+        case 'A': return isBackground ? '#D4EDDA' : '#28A745'; // Green
+        case 'B': return isBackground ? '#CCE5FF' : '#007BFF'; // Blue
+        case 'C': return isBackground ? '#FFF3CD' : '#FFC107'; // Yellow
+        case 'D': return isBackground ? '#F8D7DA' : '#DC3545'; // Red
+        default: return isBackground ? '#E2E6EA' : '#6C757D'; // Gray
+    }
+};
 
 function Dashboard() {
   const navigate = useNavigate()
-  const { userData } = useSelector((state) => state.user);
+  const { userData, token } = useSelector((state) => state.user);
   const { creatorCourseData } = useSelector((state) => state.course);
   const [submissions, setSubmissions] = useState({});
+  const [grades, setGrades] = useState({}); // State to hold grades for each submission
+  const [feedback, setFeedback] = useState({}); // State to hold feedback for each submission
+  const [submittingGrade, setSubmittingGrade] = useState(false);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(true);
+
+
+  const handleGradeChange = (submissionId, value) => {
+      setGrades(prev => ({ ...prev, [submissionId]: value }));
+  };
+
+  const handleFeedbackChange = (submissionId, value) => {
+      setFeedback(prev => ({ ...prev, [submissionId]: value }));
+  };
+
+  const assignGrade = async (submissionId, assignmentId) => {
+      setSubmittingGrade(true);
+      try {
+          const selectedGrade = grades[submissionId];
+          const selectedFeedback = feedback[submissionId];
+
+          if (!selectedGrade) {
+              toast.error("Please select a grade.");
+              setSubmittingGrade(false);
+              return;
+          }
+
+          // Validate required fields before sending
+          if (!submissionId || !assignmentId) {
+              toast.error("Submission or Assignment ID missing.");
+              setSubmittingGrade(false);
+              return;
+          }
+
+          const result = await axios.post(
+              `${serverUrl}/api/grade/assign`,
+              { submissionId, assignmentId, grade: selectedGrade, feedback: selectedFeedback || "" },
+              { headers: { Authorization: `Bearer ${token}` } }
+          );
+          // Refetch submissions for the assignment to get updated grade
+          const { data } = await axios.get(
+              `${serverUrl}/api/submission/${assignmentId}`,
+              { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setSubmissions(prevSubmissions => ({
+              ...prevSubmissions,
+              [assignmentId]: data.submissions
+          }));
+          toast.success("Grade assigned successfully!");
+      } catch (error) {
+          console.error("Error assigning grade:", error);
+          toast.error(error.response?.data?.message || error.message || "Failed to assign grade.");
+      } finally {
+          setSubmittingGrade(false);
+      }
+  };
 
   useEffect(() => {
-    const fetchSubmissions = async () => {
-        try {
-            const newSubmissions = {};
-            for (const course of creatorCourseData) {
-                for (const assignment of course.assignments) {
-                    const { data } = await axios.get(
-                        `${serverUrl}/api/submission/${assignment._id}`,
-                        { withCredentials: true }
-                    );
-                    newSubmissions[assignment._id] = data.submissions;
-                }
-            }
-            setSubmissions(newSubmissions);
-        } catch (error) {
-            console.error("Error fetching submissions:", error);
-        }
-    };
-
-    if (creatorCourseData) {
-        fetchSubmissions();
-    }
-}, [creatorCourseData]);
-
+      const fetchSubmissions = async () => {
+          try {
+              setLoadingSubmissions(true);
+              const newSubmissions = {};
+              for (const course of creatorCourseData) {
+                  if (course.assignments) { // Ensure assignments exist
+                      for (const assignment of course.assignments) {
+                          if (assignment && assignment._id) { // Check if assignment and assignment._id are not null/undefined
+                            const { data } = await axios.get(
+                                `${serverUrl}/api/submission/${assignment._id}`,
+                                { headers: { Authorization: `Bearer ${token}` } }
+                            );
+                            newSubmissions[assignment._id] = data.submissions;
+                          }
+                      }
+                  }
+              }
+              setSubmissions(newSubmissions);
+          } catch (error) {
+              console.error("Error fetching submissions:", error);
+          } finally {
+              setLoadingSubmissions(false);
+          }
+      };
+    
+      if (creatorCourseData) {
+          fetchSubmissions();
+      }
+    }, [creatorCourseData, token]);
 
   // update based on your store
 
@@ -112,32 +189,83 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6 mt-8">
-    <h2 className="text-xl font-bold mb-4">Assignment Submissions</h2>
-    {creatorCourseData?.map((course) => (
-        <div key={course._id} className="mb-8">
-            <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
-            {course.assignments?.map((assignment) => (
-                <div key={assignment._id} className="border p-4 rounded-lg mb-4">
-                    <h4 className="text-md font-semibold">{assignment.title}</h4>
-                    <ul className="list-disc pl-6 mt-2">
-                        {submissions[assignment._id]?.map((submission) => (
-                            <li key={submission._id} className="text-sm">
-                                <span className="font-semibold">{submission.student.name}: </span>
-                                <a href={submission.submissionLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                                    {submission.submissionLink}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6 mt-8">
+                    <h2 className="text-xl font-bold mb-4">Assignment Submissions</h2>
+                    {loadingSubmissions ? (
+                        <div className="flex justify-center items-center h-40">
+                            <ClipLoader size={30} color={'#000'} />
+                        </div>
+                    ) : (
+                        <>
+                            {creatorCourseData?.map((course) => (
+                                <div key={course._id} className="mb-8">
+                                    <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
+                                    {course.assignments?.map((assignment) => (
+                                        <div key={assignment._id} className="border p-4 rounded-lg mb-4">
+                                            <h4 className="text-md font-semibold">{assignment.title}</h4>
+                                            <ul className="list-disc pl-6 mt-2">
+                                                {submissions[assignment._id]?.map((submission) => (
+                                                    <li key={submission._id} className="text-sm border-b pb-2 mb-2 last:border-b-0">
+                                                        <span className="font-semibold">{submission.student.name}: </span>
+                                                        <a href={submission.submissionLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                                                            {submission.submissionLink}
+                                                        </a>
+                                                        {submission.grade ? (
+                                                            <div
+                                                                className="mt-2 p-2 rounded-md"
+                                                                style={{ backgroundColor: getGradeColor(submission.grade.grade, true) }}
+                                                            >
+                                                                <p className="font-semibold">
+                                                                    Grade: <span style={{ color: getGradeColor(submission.grade.grade) }}>{submission.grade.grade}</span>
+                                                                </p>
+                                                                <p className="text-gray-700">Feedback: {submission.grade.feedback}</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="mt-2 p-2 bg-yellow-100 rounded-md">
+                                                                <h5 className="font-semibold mb-1">Assign Grade</h5>
+                                                                <div className="flex flex-col sm:flex-row gap-2">
+                                                                    <select
+                                                                        className="w-full sm:w-1/3 border px-3 py-2 rounded-md bg-white"
+                                                                        value={grades[submission._id] || ''}
+                                                                        onChange={(e) => handleGradeChange(submission._id, e.target.value)}
+                                                                    >
+                                                                        <option value="">Select Grade</option>
+                                                                        <option value="A">A</option>
+                                                                        <option value="B">B</option>
+                                                                        <option value="C">C</option>
+                                                                        <option value="D">D</option>
+                                                                    </select>
+                                                                    <textarea
+                                                                        className="w-full sm:flex-1 border px-2 py-1 rounded-md resize-none text-sm"
+                                                                        placeholder="Add feedback (optional)"
+                                                                        value={feedback[submission._id] || ''}
+                                                                        onChange={(e) => handleFeedbackChange(submission._id, e.target.value)}
+                                                                        rows="1"
+                                                                    ></textarea>
+                                                                    <button
+                                                                        className="bg-black text-white px-3 py-1 rounded-md hover:bg-gray-700 w-full sm:w-auto text-sm"
+                                                                        onClick={() => assignGrade(submission._id, assignment._id)}
+                                                                        disabled={submittingGrade}
+                                                                    >
+                                                                        {submittingGrade ? <ClipLoader size={15} color={'white'} /> : 'Submit'}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </>
+                    )}
                 </div>
-            ))}
+                <QuizManager />
+            </div>
         </div>
-    ))}
-</div>
-      </div>
-    </div>
-  )
+    );
 }
 
-export default Dashboard
+export default Dashboard;

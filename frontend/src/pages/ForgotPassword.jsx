@@ -17,7 +17,7 @@ function ForgotPassword() {
    const handleStep1 = async () => {
     setLoading(true)
     try {
-      const result = await axios.post(`${serverUrl}/api/auth/sendotp` , {email} , {withCredentials:true})
+      const result = await axios.post(`${serverUrl}/api/auth/sendotp`)
       console.log(result)
       setStep(2)
       toast.success(result.data.message)
@@ -33,7 +33,7 @@ function ForgotPassword() {
     const handleStep2 = async () => {
     setLoading(true)
     try {
-      const result = await axios.post(`${serverUrl}/api/auth/verifyotp` , {email,otp} , {withCredentials:true})
+      const result = await axios.post(`${serverUrl}/api/auth/verifyotp`)
       console.log(result)
       
       toast.success(result.data.message)
@@ -52,7 +52,7 @@ function ForgotPassword() {
       if(newpassword !== conPassword){
         return toast.error("password does not match")
       }
-      const result = await axios.post(`${serverUrl}/api/auth/resetpassword` , {email,password:newpassword} , {withCredentials:true})
+      const result = await axios.post(`${serverUrl}/api/auth/resetpassword` , {email,password:newpassword})
       console.log(result)
       toast.success(result.data.message)
       setLoading(false)

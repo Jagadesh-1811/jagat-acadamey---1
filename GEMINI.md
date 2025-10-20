@@ -1,3 +1,2 @@
-Whenever changing code or implementing a feature first changing in backend or see what backend has offers to that feature, then based on backend code front-end.
-Teachers can create detailed assignments by specifying the assignment title, description, deadline, and relevant resources (e.g., Google Docs or GitHub repositories). Each assignment can include a reference GitHub link or Google Docs link for collaboration or code-based submissions. Assignments are stored in the database and automatically displayed under the respective course page for all enrolled students. Teachers can later review submissions, grade them (using A–D or numeric scoring), and add feedback.
-teachers are be the eductor in the above prompt 
+Failed to load resource: the server responded with a status of 401 (Unauthorized)Understand this error
+AIChatbot.jsx?t=1760968779323:326 Error sending message: AxiosError 

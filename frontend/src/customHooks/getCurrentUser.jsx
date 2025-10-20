@@ -5,12 +5,19 @@ import { useDispatch, useSelector } from "react-redux"
 import { setUserData } from "../redux/userSlice"
 const getCurrentUser = ()=>{
     let dispatch = useDispatch()
+    const { token } = useSelector(state => state.user)
    
-    useEffect(()=>{
+    useEffect(()=> {
         const fetchUser = async () => {
             try {
-                let result = await axios.get(serverUrl + "/api/user/currentuser" , {withCredentials:true})
-                dispatch(setUserData(result.data))
+                if (token) {
+                    let result = await axios.get(serverUrl + "/api/user/currentuser" , {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    dispatch(setUserData(result.data))
+                }
 
             } catch (error) {
                 console.log(error)
@@ -18,7 +25,7 @@ const getCurrentUser = ()=>{
             }
         }
         fetchUser()
-    },[])
+    },[token])
 }
 
 export default getCurrentUser

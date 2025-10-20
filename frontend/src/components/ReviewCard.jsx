@@ -1,6 +1,8 @@
 import React from "react";
 import { FaStar } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
+import fallbackImage from '../assets/empty.jpg';
+
 const ReviewCard = ({ text, name, image, rating, role }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 max-w-sm w-full">
@@ -21,7 +23,7 @@ const ReviewCard = ({ text, name, image, rating, role }) => {
       {/* 👤 Reviewer Info */}
       <div className="flex items-center gap-3">
         <img
-          src={image}
+          src={image || fallbackImage}
           alt={name}
           className="w-10 h-10 rounded-full object-cover"
         />

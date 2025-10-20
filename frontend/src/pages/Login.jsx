@@ -8,11 +8,11 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdRemoveRedEye } from "react-icons/md";
 import { useNavigate } from 'react-router-dom'
 import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../../utils/Firebase'
+import { auth, provider } from '../utils/Firebase'
 import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
 import { useDispatch } from 'react-redux'
-import { setUserData } from '../redux/userSlice'
+import { setUserData, setToken } from '../redux/userSlice'
 
 function Login() {
     const [email,setEmail]= useState("")
@@ -24,15 +24,16 @@ function Login() {
     const handleLogin = async () => {
         setLoading(true)
         try {
-            const result = await axios.post(serverUrl + "/api/auth/login" , {email , password} ,{withCredentials:true})
-            dispatch(setUserData(result.data))
+            const result = await axios.post(serverUrl + "/api/auth/login" , {email , password})
+            dispatch(setUserData(result.data.user))
+            dispatch(setToken(result.data.token))
             navigate("/")
             setLoading(false)
             toast.success("Login Successfully")
         } catch (error) {
             console.log(error)
             setLoading(false)
-            toast.error(error.response.data.message)
+            toast.error(error.response?.data?.message || "Network error or server is down.")
         }
         
     }
@@ -47,14 +48,14 @@ function Login() {
                 
                 
                 const result = await axios.post(serverUrl + "/api/auth/googlesignup" , {name , email , role}
-                    , {withCredentials:true}
                 )
-                dispatch(setUserData(result.data))
+                dispatch(setUserData(result.data.user))
+                dispatch(setToken(result.data.token))
                 navigate("/")
                 toast.success("Login Successfully")
             } catch (error) {
                 console.log(error)
-                toast.error(error.response.data.message)
+                toast.error(error.response?.data?.message || "Network error or server is down.")
             }
             
         }

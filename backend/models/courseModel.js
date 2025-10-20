@@ -33,6 +33,10 @@ const courseSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Lecture"
     }],
+    materials:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Material"
+    }],
     creator:{
          type:mongoose.Schema.Types.ObjectId,
         ref:"User"
@@ -48,6 +52,14 @@ const courseSchema = new mongoose.Schema({
     assignments:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Assignment"
+    }],
+    quizzes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Quiz"
+    }],
+    doubtSessions:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"DoubtSession"
     }],
 },{timestamps:true})
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaArrowLeft } from "react-icons/fa"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,6 +12,7 @@ function EditLecture() {
     const [loading1,setLoading1]= useState(false)
     const {courseId , lectureId} = useParams()
     const {lectureData} = useSelector(state=>state.lecture)
+    const {token} = useSelector(state=>state.user)
     const dispatch = useDispatch()
     const selectedLecture = lectureData.find(lecture => lecture._id === lectureId)
     const [videoUrl,setVideoUrl] = useState(null)
@@ -25,9 +26,13 @@ function EditLecture() {
     
 
     const editLecture = async () => {
+      if (!token) {
+        toast.error("Authentication token not found. Please log in again.");
+        return;
+      }
       setLoading(true)
       try {
-        const result = await axios.post(serverUrl + `/api/course/editlecture/${lectureId}` , formData , {withCredentials:true})
+        const result = await axios.post(serverUrl + `/api/course/editlecture/${lectureId}` , formData , { headers: { Authorization: `Bearer ${token}` } })
         console.log(result.data)
         dispatch(setLectureData([...lectureData,result.data]))
         toast.success("Lecture Updated")
@@ -35,15 +40,19 @@ function EditLecture() {
         setLoading(false)
       } catch (error) {
         console.log(error)
-        toast.error(error.response.data.message)
+                  toast.error(error.response?.data?.message || "Failed to edit lecture.")
         setLoading(false)
       }
-    }
+    };
 
     const removeLecture = async () => {
+      if (!token) {
+        toast.error("Authentication token not found. Please log in again.");
+        return;
+      }
       setLoading1(true)
       try {
-        const result = await axios.delete(serverUrl + `/api/course/removelecture/${lectureId}` , {withCredentials:true})
+        const result = await axios.delete(serverUrl + `/api/course/removelecture/${lectureId}` , { headers: { Authorization: `Bearer ${token}` } })
         console.log(result.data)
         toast.success("Lecture Removed")
        navigate(`/createlecture/${courseId}`)

@@ -26,14 +26,19 @@ function AddCourses() {
    const [frontendImage,setFrontendImage] = useState(null)
    const [backendImage,setBackendImage] = useState(null)
    let [loading,setLoading] = useState(false)
+   const [courseMaterials, setCourseMaterials] = useState([]);
+   const [newMaterialTitle, setNewMaterialTitle] = useState('');
+   const [newMaterialFile, setNewMaterialFile] = useState(null);
+   const [uploadingMaterial, setUploadingMaterial] = useState(false);
+   const [fetchingMaterials, setFetchingMaterials] = useState(true);
    const dispatch = useDispatch()
    const {courseData} = useSelector(state=>state.course)
-
+   const { token } = useSelector(state => state.user);
 
 
     const getCourseById = async () => {
       try {
-        const result = await axios.get(serverUrl + `/api/course/getcourse/${courseId}` , {withCredentials:true})
+        const result = await axios.get(serverUrl + `/api/course/getcourse/${courseId}` , { headers: { Authorization: `Bearer ${token}` } })
           setSelectedCourse(result.data)
           console.log(result)
         
@@ -42,6 +47,20 @@ function AddCourses() {
       }
       
     }
+
+    const fetchCourseMaterials = async () => {
+      try {
+        setFetchingMaterials(true);
+        const response = await axios.get(`${serverUrl}/api/material/course/${courseId}/materials`, { headers: { Authorization: `Bearer ${token}` } });
+        setCourseMaterials(response.data);
+      } catch (error) {
+        console.error("Error fetching course materials:", error);
+        toast.error(error.response?.data?.message || "Failed to fetch course materials.");
+      } finally {
+        setFetchingMaterials(false);
+      }
+    };
+
     useEffect(() => {
   if (selectedCourse) {
     setTitle(selectedCourse.title || "")
@@ -59,15 +78,67 @@ function AddCourses() {
 
     useEffect(()=>{
       getCourseById()
+      fetchCourseMaterials();
 
-    },[])
-  const handleThumbnail = (e)=>{
-    const file = e.target.files[0]
-    setBackendImage(file)
-    setFrontendImage(URL.createObjectURL(file))
-  }
-
-
+    },[courseId, token])
+      const handleThumbnail = (e)=>{
+        const file = e.target.files[0]
+        setBackendImage(file)
+        setFrontendImage(URL.createObjectURL(file))
+      }
+  
+      const handleMaterialUpload = async (e) => {
+          e.preventDefault();
+          if (!newMaterialTitle || !newMaterialFile) {
+              toast.error("Please provide both title and file for the material.");
+              return;
+          }
+  
+          setUploadingMaterial(true);
+          const formData = new FormData();
+          formData.append("title", newMaterialTitle);
+          formData.append("file", newMaterialFile);
+  
+          try {
+              const response = await axios.post(
+                  `${serverUrl}/api/material/course/${courseId}/materials`,
+                  formData,
+                  { headers: { Authorization: `Bearer ${token}` } } // let axios set Content-Type with proper boundary
+              );
+              toast.success("Material uploaded successfully!");
+              const uploaded = response.data?.material || response.data;
+              setCourseMaterials((prev) => [...prev, uploaded]);
+              setNewMaterialTitle('');
+              setNewMaterialFile(null);
+              // reset the form to clear file input visually
+              if (e?.target && typeof e.target.reset === 'function') {
+                e.target.reset();
+              } else {
+                // fall back to clearing first file input if present
+                const fileInput = document.querySelector('input[type="file"]');
+                if (fileInput) fileInput.value = '';
+              }
+          } catch (error) {
+              console.error("Error uploading material:", error);
+              toast.error(error.response?.data?.message || "Failed to upload material.");
+          } finally {
+              setUploadingMaterial(false);
+          }
+      };
+  
+      const handleMaterialDelete = async (materialId) => {
+          if (!window.confirm("Are you sure you want to delete this material?")) {
+              return;
+          }
+          try {
+              await axios.delete(`${serverUrl}/api/material/materials/${materialId}`, { headers: { Authorization: `Bearer ${token}` } });
+              toast.success("Material deleted successfully!");
+              setCourseMaterials((prev) => prev.filter((material) => material._id !== materialId));
+          } catch (error) {
+              console.error("Error deleting material:", error);
+              toast.error(error.response?.data?.message || "Failed to delete material.");
+          }
+      };
 const editCourseHandler = async () => {
   setLoading(true);
   const formData = new FormData();
@@ -84,7 +155,7 @@ const editCourseHandler = async () => {
     const result = await axios.post(
       `${serverUrl}/api/course/editcourse/${courseId}`,
       formData,
-      { withCredentials: true }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     const updatedCourse = result.data;
@@ -115,7 +186,7 @@ const editCourseHandler = async () => {
   const removeCourse = async () => {
     setLoading(true)
     try {
-      const result = await axios.delete(serverUrl + `/api/course/removecourse/${courseId}` , {withCredentials:true})
+      const result = await axios.delete(serverUrl + `/api/course/removecourse/${courseId}` , { headers: { Authorization: `Bearer ${token}` } })
       toast.success("Course Deleted")
        const filteredCourses = courseData.filter(c => c._id !== courseId);
       dispatch(setCourseData(filteredCourses));
@@ -145,91 +216,165 @@ const editCourseHandler = async () => {
       </div>
 
       {/* Form Box */}
-      <div className="bg-gray-50 p-6 rounded-md">
-        <h3 className="text-lg font-medium mb-4">Basic Course Information</h3>
-        <div className="space-x-2 space-y-2 ">
-          {!isPublished? <button className="bg-green-100 text-green-600 px-4 py-2 rounded-md border-1" onClick={()=>setIsPublished(prev=>!prev)}>Click to Publish</button> 
-          :<button className="bg-red-100 text-red-600 px-4 py-2 rounded-md border-1" onClick={()=>setIsPublished(prev=>!prev)}>Click to UnPublish</button>
-          }
-          <button className="bg-red-600 text-white px-4 py-2 rounded-md" disabled={loading} onClick={removeCourse}>{loading?<ClipLoader size={30} color='white'/> :"Remove Course"}</button>
-        </div>
-
-        <form className="space-y-6" onSubmit={(e)=>e.preventDefault()}>
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input type="text" placeholder="Course Title" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setTitle(e.target.value)} value={title}/>
+                <div className="bg-gray-50 p-6 rounded-md">
+                  <h3 className="text-lg font-medium mb-4">Basic Course Information</h3>
+                  <div className="space-x-2 space-y-2 ">
+                    {!isPublished? <button className="bg-green-100 text-green-600 px-4 py-2 rounded-md border-1" onClick={()=>setIsPublished(prev=>!prev)}>Click to Publish</button> 
+                    :<button className="bg-red-100 text-red-600 px-4 py-2 rounded-md border-1" onClick={()=>setIsPublished(prev=>!prev)}>Click to UnPublish</button>
+                    }
+                    <button className="bg-red-600 text-white px-4 py-2 rounded-md" disabled={loading} onClick={removeCourse}>{loading?<ClipLoader size={30} color='white'/> :"Remove Course"}</button>
+                  </div>
+      
+                  <form className="space-y-6" onSubmit={(e)=>e.preventDefault()}>
+                    {/* Title */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                      <input type="text" placeholder="Course Title" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setTitle(e.target.value)} value={title}/>
+                    </div>
+      
+                    {/* Subtitle */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+                      <input type="text" placeholder="Subtitle" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setSubTitle(e.target.value)} value={subTitle} />
+                    </div>
+      
+                    {/* Description */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                      <textarea placeholder="Course description" className="w-full border px-4 py-2 rounded-md h-24 resize-none" onChange={(e)=>setDescription(e.target.value)} value={description}></textarea>
+                    </div>
+      
+                    {/* Category, Level, Price - Flex row */}
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+                      {/* Category */}
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select className="w-full border px-4 py-2 rounded-md bg-white" onChange={(e)=>setCategory(e.target.value)} value={category}>
+                          <option value="">Select Category</option>
+                           <option value="App Development">App Development</option>
+                                       <option value="AI/ML">AI/ML</option>
+                                      <option value="AI Tools">AI Tools
+                                      </option>
+                                       <option value="Data Science">Data Science</option>
+                                      <option value="Data Analytics">Data Analytics</option>
+                                      <option value="Ethical Hacking">Ethical Hacking</option>
+                                      <option value="UI UX Designing">UI UX Designing</option>
+                                      <option value="Web Development">Web Development</option>
+                                      <option value="Others">Others</option>
+                        </select>
+                      </div>
+      
+                      {/* Level */}
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Course Level</label>
+                        <select className="w-full border px-4 py-2 rounded-md bg-white" onChange={(e)=>setLevel(e.target.value)} value={level} >
+                          <option value="">Select Level</option>
+                          <option value="Beginner">Beginner</option>
+                          <option value="Intermediate">Intermediate</option>
+                          <option value="Advanced">Advanced</option>
+                        </select>
+                      </div>
+      
+                      {/* Price */}
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR)</label>
+                        <input type="number" placeholder="₹" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setPrice(e.target.value)} value={price} />
+                      </div>
+                    </div>
+      
+                    {/* Thumbnail */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Course Thumbnail</label>
+                      <input type="file" ref={thumb} hidden className="w-full border px-4 py-2 rounded-md" onChange={handleThumbnail} accept='image/*' />
+                    </div>
+      
+                    <div  className='relative w-[300px]
+                    h-[170px]'><img src={frontendImage} alt="" className='w-[100%]
+                    h-[100%] border-1 border-black rounded-[5px]' onClick={()=>thumb.current.click()} />
+                    <MdEdit className='w-[20px] h-[20px] absolute top-2 right-2  ' onClick={()=>thumb.current.click()}/> </div>
+      
+                    <div className='flex items-center justify-start gap-[15px]'>
+                      <button className='bg-[#e9e8e8] hover:bg-red-200 text-black border-1 border-black cursor-pointer px-4 py-2 rounded-md' onClick={()=>navigate("/courses")}>Cancel</button>
+                      <button className='bg-black text-white px-7 py-2 rounded-md hover:bg-gray-500 cursor-pointer' disabled={loading} onClick={editCourseHandler}>{loading ? <ClipLoader size={30} color='white'/>:"Save"}</button>
+                      
+                    </div>
+                  </form>
+                </div>
+      
+                {/* Course Materials Section */}
+                <div className="mt-8 p-6 bg-white rounded-md shadow-sm">
+                  <h3 className="text-lg font-medium mb-4">Course Materials</h3>
+      
+                  {/* Upload New Material Form */}
+                  <form onSubmit={handleMaterialUpload} className="space-y-4 mb-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Material Title</label>
+                      <input
+                        type="text"
+                        placeholder="e.g., Lecture Slides, Project Guidelines"
+                        className="w-full border px-4 py-2 rounded-md"
+                        value={newMaterialTitle}
+                        onChange={(e) => setNewMaterialTitle(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Upload File</label>
+                      <input
+                        type="file"
+                        className="w-full border px-4 py-2 rounded-md bg-white"
+                        onChange={(e) => setNewMaterialFile(e.target.files[0])}
+                        required
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                      disabled={uploadingMaterial}
+                    >
+                      {uploadingMaterial ? <ClipLoader size={20} color='white' /> : 'Upload Material'}
+                    </button>
+                  </form>
+      
+                  {/* Display Existing Materials */}
+                  <h4 className="text-md font-medium mb-3 border-b pb-2">Uploaded Materials</h4>
+                  {fetchingMaterials ? (
+                    <div className="flex justify-center items-center h-20">
+                      <ClipLoader size={30} color='#000' />
+                    </div>
+                  ) : courseMaterials.length === 0 ? (
+                    <p className="text-gray-600">No materials uploaded yet.</p>
+                  ) : (
+                    <ul className="space-y-3">
+                      {courseMaterials.map((material) => (
+                        <li key={material._id} className="flex items-center justify-between p-3 border rounded-md bg-gray-50">
+                          <div>
+                            <p className="font-medium">{material.title}</p>
+                            <p className="text-sm text-gray-500">{material.fileType} - {(material.fileSize / 1024).toFixed(2)} KB</p>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <a
+                              href={material.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              download={material.title} // Added download attribute
+                              className="text-blue-600 hover:underline text-sm"
+                            >
+                              Download
+                            </a>
+                            <button
+                              onClick={() => handleMaterialDelete(material._id)}
+                              className="text-red-600 hover:text-red-800 text-sm"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
           </div>
-
-          {/* Subtitle */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-            <input type="text" placeholder="Subtitle" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setSubTitle(e.target.value)} value={subTitle} />
-          </div>
-
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea placeholder="Course description" className="w-full border px-4 py-2 rounded-md h-24 resize-none" onChange={(e)=>setDescription(e.target.value)} value={description}></textarea>
-          </div>
-
-          {/* Category, Level, Price - Flex row */}
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-            {/* Category */}
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select className="w-full border px-4 py-2 rounded-md bg-white" onChange={(e)=>setCategory(e.target.value)} value={category}>
-                <option value="">Select Category</option>
-                 <option value="App Development">App Development</option>
-                             <option value="AI/ML">AI/ML</option>
-                            <option value="AI Tools">AI Tools
-                            </option>
-                             <option value="Data Science">Data Science</option>
-                            <option value="Data Analytics">Data Analytics</option>
-                            <option value="Ethical Hacking">Ethical Hacking</option>
-                            <option value="UI UX Designing">UI UX Designing</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Others">Others</option>
-              </select>
-            </div>
-
-            {/* Level */}
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Course Level</label>
-              <select className="w-full border px-4 py-2 rounded-md bg-white" onChange={(e)=>setLevel(e.target.value)} value={level} >
-                <option value="">Select Level</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-              </select>
-            </div>
-
-            {/* Price */}
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR)</label>
-              <input type="number" placeholder="₹" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setPrice(e.target.value)} value={price} />
-            </div>
-          </div>
-
-          {/* Thumbnail */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Course Thumbnail</label>
-            <input type="file" ref={thumb} hidden className="w-full border px-4 py-2 rounded-md" onChange={handleThumbnail} accept='image/*' />
-          </div>
-
-          <div  className='relative w-[300px]
-          h-[170px]'><img src={frontendImage} alt="" className='w-[100%]
-          h-[100%] border-1 border-black rounded-[5px]' onClick={()=>thumb.current.click()} />
-          <MdEdit className='w-[20px] h-[20px] absolute top-2 right-2  ' onClick={()=>thumb.current.click()}/> </div>
-
-          <div className='flex items-center justify-start gap-[15px]'>
-            <button className='bg-[#e9e8e8] hover:bg-red-200 text-black border-1 border-black cursor-pointer px-4 py-2 rounded-md' onClick={()=>navigate("/courses")}>Cancel</button>
-            <button className='bg-black text-white px-7 py-2 rounded-md hover:bg-gray-500 cursor-pointer' disabled={loading} onClick={editCourseHandler}>{loading ? <ClipLoader size={30} color='white'/>:"Save"}</button>
-            
-          </div>
-        </form>
-      </div>
-    </div>
   )
 }
 

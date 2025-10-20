@@ -26,7 +26,9 @@ import EnrolledCourse from './pages/EnrolledCourse'
 import ViewLecture from './pages/ViewLecture'
 import SearchWithAi from './pages/SearchWithAi'
 import getAllReviews from './customHooks/getAllReviews'
-import StudentDashboard from './pages/dashboard'
+import StudentDashboard from './pages/Dashboard.jsx'
+import CertificateManager from './pages/admin/CertificateManager'
+import CreateDoubtSession from './pages/admin/CreateDoubtSession';
 
 export const serverUrl = "http://localhost:8000"
 
@@ -63,6 +65,8 @@ function App() {
         <Route path='/createlecture/:courseId' element={userData?.role === "educator"?<CreateLecture/>:<Navigate to={"/signup"}/>}/>
         <Route path='/editlecture/:courseId/:lectureId' element={userData?.role === "educator"?<EditLecture/>:<Navigate to={"/signup"}/>}/>
         <Route path='/admin/create-assignment/:courseId' element={userData?.role === "educator"?<CreateAssignment/>:<Navigate to={"/signup"}/>}/>
+        <Route path='/admin/create-doubt-session/:courseId' element={userData?.role === "educator" ? <CreateDoubtSession /> : <Navigate to={"/signup"} />} />
+        <Route path='/admin/certificate-manager' element={userData?.role === "educator"?<CertificateManager/>:<Navigate to={"/signup"}/>}/>
         <Route path='/forgotpassword' element={<ForgotPassword/>}/>
          </Routes>
 

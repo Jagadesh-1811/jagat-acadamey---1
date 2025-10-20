@@ -15,6 +15,11 @@ export const createOrder = async (req, res) => {
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });
 
+    // Add check for course price
+    if (course.price === undefined || course.price === null || isNaN(course.price) || course.price <= 0) {
+        return res.status(400).json({ message: "Course price is invalid or not set." });
+    }
+
     const options = {
       amount: course.price * 100, // in paisa
       currency: 'INR',
@@ -40,15 +45,18 @@ export const verifyPayment = async (req, res) => {
         if(orderInfo.status === 'paid') {
       // Update user and course enrollment
       const user = await User.findById(userId);
-      if (!user.enrolledCourses.includes(courseId)) {
+      // Ensure courseId is a string for comparison
+      if (!user.enrolledCourses.map(id => id.toString()).includes(courseId.toString())) {
         user.enrolledCourses.push(courseId);
         await user.save();
       }
 
       const course = await Course.findById(courseId).populate("lectures");
-      if (!course.enrolledStudents.includes(userId)) {
+      if (!course.enrolledStudents.map(id => id.toString()).includes(userId.toString())) {
+        console.log("Enrolling user:", userId.toString(), "into course:", courseId.toString());
         course.enrolledStudents.push(userId);
         await course.save();
+        console.log("User enrolled. Updated enrolledStudents:", course.enrolledStudents.map(id => id.toString()));
       }
 
       return res.status(200).json({ message: "Payment verified and enrollment successful" });
