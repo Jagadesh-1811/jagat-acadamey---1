@@ -37,15 +37,15 @@ function Profile() {
         <FaArrowLeftLong  className='absolute top-[8%] left-[5%] w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/")}/>
         {/* Profile Header */}
         <div className="flex flex-col items-center text-center">
-          {userData.photoUrl ? <img
+          {userData?.photoUrl ? <img
             src={userData?.photoUrl}
             alt=""
             className="w-24 h-24 rounded-full object-cover border-4 border-[black]"
           /> : <div className='w-24 h-24 rounded-full text-white flex items-center justify-center text-[30px] border-2 bg-black  border-white cursor-pointer'>
-         {userData?.name.slice(0,1).toUpperCase()}
+         {userData?.name ? userData.name.slice(0,1).toUpperCase() : ''}
           </div>}
-          <h2 className="text-2xl font-bold mt-4 text-gray-800">{userData.name}</h2>
-          <p className="text-sm text-gray-500">{userData.role}</p>
+          <h2 className="text-2xl font-bold mt-4 text-gray-800">{userData?.name || ''}</h2>
+          <p className="text-sm text-gray-500">{userData?.role || ''}</p>
         </div>
 
         {/* Profile Info */}
@@ -64,7 +64,7 @@ function Profile() {
 
           <div className="text-sm">
             <span className="font-semibold text-gray-700">Enrolled Courses: </span>
-            <span>{userData.enrolledCourses.length}</span>
+            <span>{userData?.enrolledCourses ? userData.enrolledCourses.length : 0}</span>
           </div>
         </div>
 
