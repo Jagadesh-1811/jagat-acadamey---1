@@ -30,7 +30,7 @@ import StudentDashboard from './pages/Dashboard.jsx'
 import CertificateManager from './pages/admin/CertificateManager'
 import CreateDoubtSession from './pages/admin/CreateDoubtSession';
 
-export const serverUrl = "https://jagat-acadamey-1.onrender.com"
+export const serverUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"
 
 function App() {
   
