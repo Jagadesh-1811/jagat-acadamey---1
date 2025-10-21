@@ -24,9 +24,12 @@ let app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-
-    origin: "https://jagat-acadamey-1-1.onrender.com",
-
+    origin: [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "https://jagat-acadamey-1.onrender.com",
+        "https://jagat-acadamey-1-1.onrender.com"
+    ],
     credentials: true
 }))
 app.use("/api/auth", authRouter)
