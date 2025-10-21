@@ -39,23 +39,35 @@ function Login() {
     }
      const googleLogin = async () => {
             try {
-                const response = await signInWithPopup(auth,provider)
+                const response = await signInWithPopup(auth, provider)
                 
                 let user = response.user
                 let name = user.displayName;
-                let email=user.email
-                let role=""
+                let email = user.email
+                let role = ""
                 
+                console.log("Google user:", { name, email })
                 
-                const result = await axios.post(serverUrl + "/api/auth/googlesignup" , {name , email , role}
-                )
+                const result = await axios.post(serverUrl + "/api/auth/googlesignup", { name, email, role })
                 dispatch(setUserData(result.data.user))
                 dispatch(setToken(result.data.token))
                 navigate("/")
                 toast.success("Login Successfully")
             } catch (error) {
-                console.log(error)
-                toast.error(error.response?.data?.message || "Network error or server is down.")
+                console.error("Google login error:", error)
+                if (error.code) {
+                    // Firebase auth errors
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        toast.error("Login cancelled")
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        toast.error("Domain not authorized. Please contact admin.")
+                    } else {
+                        toast.error(error.message || "Google login failed")
+                    }
+                } else {
+                    // Backend errors
+                    toast.error(error.response?.data?.message || "Network error or server is down.")
+                }
             }
             
         }

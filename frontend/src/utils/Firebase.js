@@ -5,8 +5,8 @@ import { GoogleAuthProvider } from "firebase/auth";
 // Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
-  authDomain: "jagat-academy.firebaseapp.com",
-  projectId: "jagat-academy",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "jagat-academy.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "jagat-academy",
   storageBucket: "jagat-academy.appspot.com",
   messagingSenderId: "534998272773",
   appId: "1:534998272773:web:d4488c0ac977e09830056c",

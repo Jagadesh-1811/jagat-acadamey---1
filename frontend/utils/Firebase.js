@@ -11,8 +11,8 @@ const firebaseConfig = {
   projectId: "jagat-acadmey",
   storageBucket: "jagat-acadmey.firebasestorage.app",
   messagingSenderId: "534998272773",
-  appId: "1:534998272773:web:d4488c0ac977e09830056c",
-  measurementId: "G-RXBW105ZV2",
+  appId: "1:534998272773:web:2910ca6f54c0ecaa30056c",
+  measurementId: "G-VXJK5DKFJ3"
 };
 
 // Initialize Firebase
