@@ -188,7 +188,7 @@ const AIChatbot = () => {
       }
 
       const { data } = await axios.post(
-        `${serverUrl}/api/ai/chat`,
+        `${serverUrl}/api/ai-chat`,
         formData,
         {
           withCredentials: true,
