@@ -21,6 +21,7 @@ import certificationRouter from "./routes/certificationRoute.js"
 dotenv.config()
 let port = process.env.PORT
 let app = express()
+// CORS configuration
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
