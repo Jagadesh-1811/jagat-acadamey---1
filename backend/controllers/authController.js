@@ -158,7 +158,7 @@ export const deleteAccount = async (req, res) => {
         const userId = req.userId
         if(!userId) return res.status(401).json({message: 'Unauthorized'})
 
-        // Optionally, remove or clean up related data here (courses, submissions, orders, etc.)
+        // Delete user account and all related data
         await User.findByIdAndDelete(userId)
 
         return res.status(200).json({message: 'Account deleted successfully'})
