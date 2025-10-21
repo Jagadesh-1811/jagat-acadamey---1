@@ -7,14 +7,13 @@ import { serverUrl } from '../App'
 import { setUserData, setToken } from '../redux/userSlice'
 
 function Profile() {
-  let {userData} = useSelector(state=>state.user)
+  let {userData, token} = useSelector(state=>state.user)
   let dispatch = useDispatch()
   let navigate = useNavigate()
   const handleDelete = async () => {
     const ok = window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
     if(!ok) return
     try {
-      const token = localStorage.getItem('token') || ''
       const headers = {
         Authorization: `Bearer ${token}`
       }
