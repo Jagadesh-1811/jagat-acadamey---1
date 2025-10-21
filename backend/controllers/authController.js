@@ -156,9 +156,9 @@ export const resetPassword = async (req,res) => {
 export const deleteAccount = async (req, res) => {
     try {
         const userId = req.userId
-        if(!userId) return res.status(401).json({message: 'Unauthorized'})
+        if(!userId) return res.status(401).json({message: 'Unauthorized - no userId'})
 
-        // Delete user account and all related data
+        // Delete user account from database
         await User.findByIdAndDelete(userId)
 
         return res.status(200).json({message: 'Account deleted successfully'})
