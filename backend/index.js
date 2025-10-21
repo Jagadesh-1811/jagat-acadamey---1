@@ -39,6 +39,12 @@ app.use("/api/course", courseRouter)
 app.use("/api/payment", paymentRouter)
 app.use("/api/ai", aiRouter)
 app.use("/api/ai-chat", aiChatRouter)
+
+// Health check endpoint for debugging
+app.get("/api/ai-chat/health", (req, res) => {
+  res.status(200).json({ message: "AI Chat service is up" })
+})
+
 app.use("/api/review", reviewRouter)
 app.use("/api/assignment", assignmentRouter)
 app.use("/api/submission", submissionRouter)
