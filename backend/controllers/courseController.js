@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Course from "../models/courseModel.js"
 import Lecture from "../models/lectureModel.js"
 import User from "../models/userModel.js"
+import uploadOnCloudinary from "../configs/cloudinary.js"
 
 // create Courses
 export const createCourse = async (req,res) => {
