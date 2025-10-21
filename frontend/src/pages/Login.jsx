@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import logo from '../assets/logo.jpg'
-import google from '../assets/google.jpg'
 import axios from 'axios'
 import { serverUrl } from '../App'
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 import { MdRemoveRedEye } from "react-icons/md";
 import { useNavigate } from 'react-router-dom'
-import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../utils/Firebase'
 import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
 import { useDispatch } from 'react-redux'
@@ -37,40 +34,7 @@ function Login() {
         }
         
     }
-     const googleLogin = async () => {
-            try {
-                const response = await signInWithPopup(auth, provider)
-                
-                let user = response.user
-                let name = user.displayName;
-                let email = user.email
-                let role = ""
-                
-                console.log("Google user:", { name, email })
-                
-                const result = await axios.post(serverUrl + "/api/auth/googlesignup", { name, email, role })
-                dispatch(setUserData(result.data.user))
-                dispatch(setToken(result.data.token))
-                navigate("/")
-                toast.success("Login Successfully")
-            } catch (error) {
-                console.error("Google login error:", error)
-                if (error.code) {
-                    // Firebase auth errors
-                    if (error.code === 'auth/popup-closed-by-user') {
-                        toast.error("Login cancelled")
-                    } else if (error.code === 'auth/unauthorized-domain') {
-                        toast.error("Domain not authorized. Please contact admin.")
-                    } else {
-                        toast.error(error.message || "Google login failed")
-                    }
-                } else {
-                    // Backend errors
-                    toast.error(error.response?.data?.message || "Network error or server is down.")
-                }
-            }
-            
-        }
+        
   return (
     <div className='bg-[#dddbdb] w-[100vw] h-[100vh] flex items-center justify-center flex-col gap-3'>
             <form className='w-[90%] md:w-200 h-150 bg-[white] shadow-xl rounded-2xl flex' onSubmit={(e)=>e.preventDefault()}>
@@ -96,13 +60,9 @@ function Login() {
                     <button className='w-[80%] h-[40px] bg-black text-white cursor-pointer flex items-center justify-center rounded-[5px]' disabled={loading} onClick={handleLogin}>{loading?<ClipLoader size={30} color='white' /> : "Login"}</button>
                     <span className='text-[13px] cursor-pointer text-[#585757]' onClick={()=>navigate("/forgotpassword")}>Forget your password?</span>
     
-                    <div className='w-[80%] flex items-center gap-2'>
-                        <div className='w-[25%] h-[0.5px] bg-[#c4c4c4]'></div>
-                        <div className='w-[50%] text-[15px] text-[#999797] flex items-center justify-center '>Or continue with</div>
-                        <div className='w-[25%] h-[0.5px] bg-[#c4c4c4]'></div>
-                    </div>
+                    
                 
-                    <div className='w-[80%] h-[40px] border-1 border-[#d3d2d2] rounded-[5px] flex items-center justify-center ' onClick={googleLogin} ><img src={google} alt="" className='w-[25px]' /><span className='text-[18px] text-gray-500'>oogle</span> </div>
+                    
                      <div className='text-[#6f6f6f]'>Don't have an account? <span className='underline underline-offset-1 text-[black]' onClick={()=>navigate("/signup")}>Sign up</span></div>
     
                 </div>
