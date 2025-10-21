@@ -22,7 +22,7 @@ const upload = multer({
   },
 });
 
-// Chat route - handles both text and image
+// Chat route - handles both text and image messages
 router.post('/chat', isAuth, upload.single('image'), chat);
 
 export default router;
