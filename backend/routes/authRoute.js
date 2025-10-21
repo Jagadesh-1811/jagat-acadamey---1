@@ -12,6 +12,8 @@ authRouter.post("/googlesignup",googleSignup)
 authRouter.post("/sendotp",sendOtp)
 authRouter.post("/verifyotp",verifyOtp)
 authRouter.post("/resetpassword",resetPassword)
+
+// Delete account endpoint - protected by isAuth middleware
 authRouter.delete("/delete", isAuth, deleteAccount)
 
 
