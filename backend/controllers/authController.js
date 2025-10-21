@@ -152,3 +152,18 @@ export const resetPassword = async (req,res) => {
         return res.status(500).json({message:`Reset Password error ${error}`})
     }
 }
+
+export const deleteAccount = async (req, res) => {
+    try {
+        const userId = req.userId
+        if(!userId) return res.status(401).json({message: 'Unauthorized'})
+
+        // Optionally, remove or clean up related data here (courses, submissions, orders, etc.)
+        await User.findByIdAndDelete(userId)
+
+        return res.status(200).json({message: 'Account deleted successfully'})
+    } catch (error) {
+        console.error('deleteAccount error', error)
+        return res.status(500).json({message: `Delete account error ${error}`})
+    }
+}

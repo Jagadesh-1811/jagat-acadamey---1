@@ -1,11 +1,36 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowLeftLong } from "react-icons/fa6";
+import axios from 'axios'
+import { serverUrl } from '../App'
+import { setUserData, setToken } from '../redux/userSlice'
 
 function Profile() {
   let {userData} = useSelector(state=>state.user)
+  let dispatch = useDispatch()
   let navigate = useNavigate()
+  const handleDelete = async () => {
+    const ok = window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
+    if(!ok) return
+    try {
+      const token = localStorage.getItem('token') || ''
+      const headers = {
+        Authorization: `Bearer ${token}`
+      }
+      await axios.delete(serverUrl + '/api/auth/delete', { headers })
+      // clear local user state
+      dispatch(setUserData({}))
+      dispatch(setToken(''))
+      // clear local storage if token stored there
+      localStorage.removeItem('token')
+      navigate('/')
+      alert('Account deleted successfully')
+    } catch (error) {
+      console.error('Delete account error', error)
+      alert(error.response?.data?.message || 'Failed to delete account')
+    }
+  }
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-10 flex items-center justify-center ">
       
@@ -49,7 +74,9 @@ function Profile() {
           <button className="px-5 py-2 rounded bg-[black] text-white active:bg-[#4b4b4b] cursor-pointer transition" onClick={()=>navigate("/editprofile")}>
             Edit Profile
           </button>
-          
+          <button className="px-5 py-2 rounded bg-red-600 text-white active:bg-red-700 cursor-pointer transition" onClick={handleDelete}>
+            Delete Account
+          </button>
         </div>
       </div>
     </div>
