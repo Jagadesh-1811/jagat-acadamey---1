@@ -55,7 +55,8 @@ is https://jagat-acadamey-1-1.onrender.com/
 - Participate in **Monthly Quizzes** (20 questions, 18 correct = ₹500 voucher)  
 - Attend Doubt-Solving Sessions  via teacher-provided link  
 - Use integrated **AI Chatbot** for real-time doubt clarification (no history stored)
-
+  Download & edit a Resume Template directly from the dashboard  
+- Course certification gets for Gmail after filling the Google form 
 ---
 
 ## 💬 Discussion Forum
