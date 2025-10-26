@@ -1,4 +1,4 @@
-deployment link 
+Deployment link 
 is https://jagat-acadamey-1-1.onrender.com/
 
 # 🏫 Jagat Academy – Full-Stack Learning Management System (LMS)
@@ -125,5 +125,5 @@ Each course includes a **Discussion Forum** for students and teachers to collabo
 
 © 2025 Jagat Academy. All rights reserved.
 Empowering Learning Through Technology.
-deployment link 
+Deployment link 
 is https://jagat-acadamey-1-1.onrender.com/
