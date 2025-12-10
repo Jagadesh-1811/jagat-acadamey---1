@@ -17,6 +17,7 @@ import materialRouter from "./routes/materialRoute.js"
 import quizRouter from "./routes/quizRoute.js"
 import doubtSessionRouter from "./routes/doubtSessionRoute.js"
 import certificationRouter from "./routes/certificationRoute.js"
+import feedbackRouter from "./routes/feedbackRoute.js"
 
 dotenv.config()
 let port = process.env.PORT
@@ -28,6 +29,8 @@ app.use(cors({
     origin: [
         "http://localhost:5173",
         "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
         "https://jagat-acadamey-1.onrender.com",
         "https://jagat-acadamey-1-1.onrender.com"
     ],
@@ -42,7 +45,7 @@ app.use("/api/ai-chat", aiChatRouter)
 
 // Health check endpoint for debugging
 app.get("/api/ai-chat/health", (req, res) => {
-  res.status(200).json({ message: "AI Chat service is up" })
+    res.status(200).json({ message: "AI Chat service is up" })
 })
 
 app.use("/api/review", reviewRouter)
@@ -53,15 +56,20 @@ app.use("/api/material", materialRouter)
 app.use("/api/quiz", quizRouter)
 app.use("/api/doubt-session", doubtSessionRouter)
 app.use("/api/certification", certificationRouter)
+app.use("/api/feedback", feedbackRouter)
 
 
 
-app.get("/" , (req,res)=>{
+app.get("/", (req, res) => {
     res.send("Hello From Server")
 })
 
-app.listen(port , ()=>{
-    console.log("Server Started ")
-    connectDb()
-})
+connectDb().then(() => {
+    app.listen(port, () => {
+        console.log("Server Started ")
+    })
+}).catch(err => {
+    console.error("Failed to connect to DB:", err);
+    process.exit(1);
+});
 

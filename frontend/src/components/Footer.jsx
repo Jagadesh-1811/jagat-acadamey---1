@@ -25,6 +25,9 @@ const Footer = () => {
             <li className="hover:text-white cursor-pointer" onClick={() => navigate("/allcourses")}>Courses</li>
             <li className="hover:text-white cursor-pointer" onClick={() => navigate("/login")}>Login</li>
             <li className="hover:text-white cursor-pointer" onClick={() => navigate("/profile")}>My Profile</li>
+            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/about")}>About</li>
+            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/feedback")}>Feedback</li>
+            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/contact")}>Contact</li>
 
           </ul>
         </div>
@@ -44,7 +47,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-700 mt-10 pt-5 text-sm text-center text-gray-500">
-        © {new Date().getFullYear()} LearnAI. All rights reserved.
+        © {new Date().getFullYear()} JAGAT ACADEMY All rights reserved.
       </div>
     </footer>
   );

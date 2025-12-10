@@ -7,163 +7,164 @@ import User from "../models/userModel.js"
 import sendMail from "../configs/Mail.js"
 
 
-export const signUp=async (req,res)=>{
- 
+export const signUp = async (req, res) => {
+
     try {
 
-        let {name,email,password,role}= req.body
-        let existUser= await User.findOne({email})
-        if(existUser){
-            return res.status(400).json({message:"email already exist"})
+        let { name, email, password, role } = req.body
+        let existUser = await User.findOne({ email })
+        if (existUser) {
+            return res.status(400).json({ message: "email already exist" })
         }
-        if(!validator.isEmail(email)){
-            return res.status(400).json({message:"Please enter valid Email"})
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ message: "Please enter valid Email" })
         }
-        if(password.length < 8){
-            return res.status(400).json({message:"Please enter a Strong Password"})
+        if (password.length < 8) {
+            return res.status(400).json({ message: "Please enter a Strong Password" })
         }
-        
-        let hashPassword = await bcrypt.hash(password,10)
+
+        let hashPassword = await bcrypt.hash(password, 10)
         let user = await User.create({
-            name ,
-            email ,
-            password:hashPassword ,
+            name,
+            email,
+            password: hashPassword,
             role,
-           
-            })
+
+        })
         let token = await genToken(user._id)
-        return res.status(201).json({user, token})
+        return res.status(201).json({ user, token })
 
     } catch (error) {
         console.log("signUp error")
-        return res.status(500).json({message:`signUp Error ${error}`})
+        return res.status(500).json({ message: `signUp Error ${error}` })
     }
 }
 
-export const login=async(req,res)=>{
+export const login = async (req, res) => {
     try {
-        let {email,password}= req.body
-        let user= await User.findOne({email})
-        if(!user){
-            return res.status(400).json({message:"user does not exist"})
+        let { email, password } = req.body
+        let user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).json({ message: "user does not exist" })
         }
-        let isMatch =await bcrypt.compare(password, user.password)
-        if(!isMatch){
-            return res.status(400).json({message:"Invalid password"})
+        let isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid password" })
         }
         let token = await genToken(user._id)
-        return res.status(200).json({user, token})
+        return res.status(200).json({ user, token })
 
     } catch (error) {
         console.log("login error")
-        return res.status(500).json({message:`login Error ${error}`})
+        return res.status(500).json({ message: `login Error ${error}` })
     }
 }
 
 
 
 
-export const logOut = async(req,res)=>{
+export const logOut = async (req, res) => {
     try {
         await res.clearCookie("token")
-        return res.status(200).json({message:"logOut Successfully"})
+        return res.status(200).json({ message: "logOut Successfully" })
     } catch (error) {
-        return res.status(500).json({message:`logout Error ${error}`})
+        return res.status(500).json({ message: `logout Error ${error}` })
     }
 }
 
 
-export const googleSignup = async (req,res) => {
+export const googleSignup = async (req, res) => {
     try {
-        const {name , email , role} = req.body
-        let user= await User.findOne({email})
-        if(!user){
+        const { name, email, role } = req.body
+        let user = await User.findOne({ email })
+        if (!user) {
             user = await User.create({
-            name , email ,role
-        })
+                name, email, role
+            })
         }
         let token = await genToken(user._id)
-        return res.status(200).json({user, token})
+        return res.status(200).json({ user, token })
 
 
     } catch (error) {
         console.log(error)
-         return res.status(500).json({message:`googleSignup  ${error}`})
+        return res.status(500).json({ message: `googleSignup  ${error}` })
     }
-    
+
 }
 
-export const sendOtp = async (req,res) => {
+export const sendOtp = async (req, res) => {
     try {
-        const {email} = req.body
-        const user = await User.findOne({email})
-        if(!user){
-            return res.status(404).json({message:"User not found"})
+        const { email } = req.body
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
         }
         const otp = Math.floor(1000 + Math.random() * 9000).toString()
 
-        user.resetOtp=otp,
-        user.otpExpires=Date.now() + 5*60*1000,
-        user.isOtpVerifed= false 
+        user.resetOtp = otp,
+            user.otpExpires = Date.now() + 5 * 60 * 1000,
+            user.isOtpVerifed = false
 
         await user.save()
-        await sendMail(email,otp)
-        return res.status(200).json({message:"Email Successfully send"})
+        console.log(`OTP for ${email}: ${otp}`)
+        await sendMail(email, otp)
+        return res.status(200).json({ message: "Email Successfully send" })
     } catch (error) {
 
-        return res.status(500).json({message:`send otp error ${error}`})
-        
+        return res.status(500).json({ message: `send otp error ${error}` })
+
     }
 }
 
-export const verifyOtp = async (req,res) => {
+export const verifyOtp = async (req, res) => {
     try {
-        const {email,otp} = req.body
-        const user = await User.findOne({email})
-        if(!user || user.resetOtp!=otp || user.otpExpires<Date.now() ){
-            return res.status(400).json({message:"Invalid OTP"})
+        const { email, otp } = req.body
+        const user = await User.findOne({ email })
+        if (!user || user.resetOtp != otp || user.otpExpires < Date.now()) {
+            return res.status(400).json({ message: "Invalid OTP" })
         }
-        user.isOtpVerifed=true
-        user.resetOtp=undefined
-        user.otpExpires=undefined
+        user.isOtpVerifed = true
+        user.resetOtp = undefined
+        user.otpExpires = undefined
         await user.save()
-        return res.status(200).json({message:"OTP varified "})
+        return res.status(200).json({ message: "OTP varified " })
 
 
     } catch (error) {
-         return res.status(500).json({message:`Varify otp error ${error}`})
+        return res.status(500).json({ message: `Varify otp error ${error}` })
     }
 }
 
-export const resetPassword = async (req,res) => {
+export const resetPassword = async (req, res) => {
     try {
-        const {email ,password } =  req.body
-         const user = await User.findOne({email})
-        if(!user || !user.isOtpVerifed ){
-            return res.status(404).json({message:"OTP verfication required"})
+        const { email, password } = req.body
+        const user = await User.findOne({ email })
+        if (!user || !user.isOtpVerifed) {
+            return res.status(404).json({ message: "OTP verfication required" })
         }
 
-        const hashPassword = await bcrypt.hash(password,10)
+        const hashPassword = await bcrypt.hash(password, 10)
         user.password = hashPassword
-        user.isOtpVerifed=false
+        user.isOtpVerifed = false
         await user.save()
-        return res.status(200).json({message:"Password Reset Successfully"})
+        return res.status(200).json({ message: "Password Reset Successfully" })
     } catch (error) {
-        return res.status(500).json({message:`Reset Password error ${error}`})
+        return res.status(500).json({ message: `Reset Password error ${error}` })
     }
 }
 
 export const deleteAccount = async (req, res) => {
     try {
         const userId = req.userId
-        if(!userId) return res.status(401).json({message: 'Unauthorized - no userId'})
+        if (!userId) return res.status(401).json({ message: 'Unauthorized - no userId' })
 
         // Delete user account from database
         await User.findByIdAndDelete(userId)
 
-        return res.status(200).json({message: 'Account deleted successfully'})
+        return res.status(200).json({ message: 'Account deleted successfully' })
     } catch (error) {
         console.error('deleteAccount error', error)
-        return res.status(500).json({message: `Delete account error ${error}`})
+        return res.status(500).json({ message: `Delete account error ${error}` })
     }
 }

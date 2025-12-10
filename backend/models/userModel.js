@@ -12,14 +12,14 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String
-      
+
     },
     description: {
       type: String
     },
     role: {
       type: String,
-      enum: ["educator", "student"],
+      enum: ["educator", "student", "user"],
       required: true
     },
     photoUrl: {
@@ -30,17 +30,17 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Course'
     }],
-    resetOtp:{
-      type:String
+    resetOtp: {
+      type: String
     },
-    otpExpires:{
-      type:Date
+    otpExpires: {
+      type: Date
     },
-    isOtpVerifed:{
-      type:Boolean,
-      default:false
+    isOtpVerifed: {
+      type: Boolean,
+      default: false
     }
-    
+
   },
   { timestamps: true }
 );
