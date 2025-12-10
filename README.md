@@ -4,8 +4,6 @@
 
 Live Demo=https://jagat-acadamey-1-1.onrender.com
 
-**Live Application=https://jagat-acadamey-1-1.onrender.com/
-
 ---
 ## Table of Contents
 
