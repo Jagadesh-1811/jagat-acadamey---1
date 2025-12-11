@@ -36,7 +36,7 @@ import AdminFeedbackManager from './pages/admin/FeedbackManager';
 import Contact from './pages/Contact';
 
 
-export const serverUrl = "http://localhost:8000"
+export const serverUrl = "https://jagat-acadamey-1.onrender.com"
 
 function App() {
 
