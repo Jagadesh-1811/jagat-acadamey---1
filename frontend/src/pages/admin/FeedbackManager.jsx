@@ -4,7 +4,7 @@ import axios from 'axios';
 import { serverUrl } from '../../App';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { FaCommentDots, FaBug, FaArrowLeft, FaCheck, FaEye, FaClock, FaTrash } from 'react-icons/fa';
+import { FaCommentDots, FaBug, FaArrowLeft, FaCheck, FaEye, FaClock, FaTrash, FaSignOutAlt } from 'react-icons/fa';
 import { HiMail } from 'react-icons/hi';
 
 const FeedbackManager = () => {
@@ -18,8 +18,21 @@ const FeedbackManager = () => {
     const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
+        // Check admin authentication
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
         fetchFeedbacks();
-    }, []);
+    }, [navigate]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminData');
+        toast.success('Logged out successfully');
+        navigate('/admin/login');
+    };
 
     const fetchFeedbacks = async () => {
         try {
@@ -123,9 +136,18 @@ const FeedbackManager = () => {
                             <p className="text-gray-400 text-sm">View and manage user feedback & issues</p>
                         </div>
                     </div>
-                    <div className="text-right">
-                        <p className="text-2xl font-bold">{feedbacks.length}</p>
-                        <p className="text-gray-400 text-sm">Total Submissions</p>
+                    <div className="flex items-center gap-4">
+                        <div className="text-right">
+                            <p className="text-2xl font-bold">{feedbacks.length}</p>
+                            <p className="text-gray-400 text-sm">Total Submissions</p>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+                        >
+                            <FaSignOutAlt className="w-4 h-4" />
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>

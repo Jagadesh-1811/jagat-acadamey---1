@@ -33,11 +33,20 @@ import CertificateManager from './pages/teacher/CertificateManager'
 import CreateDoubtSession from './pages/teacher/CreateDoubtSession';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminFeedbackManager from './pages/admin/FeedbackManager';
+import AdminLogin from './pages/admin/AdminLogin';
 import Contact from './pages/Contact';
 
+// Admin Route Protection Component
+const AdminProtectedRoute = ({ children }) => {
+  const adminToken = localStorage.getItem('adminToken');
+  if (!adminToken) {
+    return <Navigate to="/admin/login" />;
+  }
+  return children;
+};
 
-export const serverUrl = "http://localhost:8000"
 
+export const serverUrl = "https://jagat-acadamey-1.onrender.com"
 function App() {
 
   let { userData } = useSelector(state => state.user)
@@ -75,8 +84,9 @@ function App() {
         <Route path='/admin/create-assignment/:courseId' element={userData?.role === "educator" ? <CreateAssignment /> : <Navigate to={"/signup"} />} />
         <Route path='/admin/create-doubt-session/:courseId' element={userData?.role === "educator" ? <CreateDoubtSession /> : <Navigate to={"/signup"} />} />
         <Route path='/admin/certificate-manager' element={userData?.role === "educator" ? <CertificateManager /> : <Navigate to={"/signup"} />} />
-        <Route path='/admin/feedback-manager' element={<AdminFeedbackManager />} />
-        <Route path='/admin/dashboard' element={<AdminDashboard />} />
+        <Route path='/admin/login' element={<AdminLogin />} />
+        <Route path='/admin/feedback-manager' element={<AdminProtectedRoute><AdminFeedbackManager /></AdminProtectedRoute>} />
+        <Route path='/admin/dashboard' element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
       </Routes>

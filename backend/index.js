@@ -18,6 +18,7 @@ import quizRouter from "./routes/quizRoute.js"
 import doubtSessionRouter from "./routes/doubtSessionRoute.js"
 import certificationRouter from "./routes/certificationRoute.js"
 import feedbackRouter from "./routes/feedbackRoute.js"
+import adminAuthRouter from "./routes/adminAuthRoute.js"
 
 dotenv.config()
 let port = process.env.PORT
@@ -57,6 +58,7 @@ app.use("/api/quiz", quizRouter)
 app.use("/api/doubt-session", doubtSessionRouter)
 app.use("/api/certification", certificationRouter)
 app.use("/api/feedback", feedbackRouter)
+app.use("/api/admin", adminAuthRouter)
 
 
 

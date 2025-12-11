@@ -4,7 +4,7 @@ import axios from 'axios';
 import { serverUrl } from '../../App';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { FaArrowLeft, FaUsers, FaChalkboardTeacher, FaMoneyBillWave, FaBook, FaCommentDots, FaBug } from 'react-icons/fa';
+import { FaArrowLeft, FaUsers, FaChalkboardTeacher, FaMoneyBillWave, FaBook, FaCommentDots, FaBug, FaSignOutAlt, FaSync } from 'react-icons/fa';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell } from 'recharts';
 
 const AdminDashboard = () => {
@@ -20,10 +20,29 @@ const AdminDashboard = () => {
     });
     const [courses, setCourses] = useState([]);
     const [feedbacks, setFeedbacks] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [adminData, setAdminData] = useState(null);
 
     useEffect(() => {
+        // Check admin authentication
+        const token = localStorage.getItem('adminToken');
+        const admin = localStorage.getItem('adminData');
+        if (!token) {
+            navigate('/admin/login');
+            return;
+        }
+        if (admin) {
+            setAdminData(JSON.parse(admin));
+        }
         fetchData();
-    }, []);
+
+        // Auto-refresh every 30 seconds for live data
+        const interval = setInterval(() => {
+            fetchData(true);
+        }, 30000);
+
+        return () => clearInterval(interval);
+    }, [navigate]);
 
     const fetchData = async () => {
         try {
@@ -71,6 +90,20 @@ const AdminDashboard = () => {
             console.error('Fetch error:', error);
         }
         setLoading(false);
+        setRefreshing(false);
+    };
+
+    const handleRefresh = () => {
+        setRefreshing(true);
+        fetchData(true);
+        toast.success('Dashboard refreshed!');
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminData');
+        toast.success('Logged out successfully');
+        navigate('/admin/login');
     };
 
     const revenueData = courses.map(course => ({
@@ -107,8 +140,32 @@ const AdminDashboard = () => {
                         </button>
                         <div>
                             <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-                            <p className="text-gray-400 text-sm">Platform Overview & Analytics</p>
+                            <p className="text-gray-400 text-sm">Welcome, {adminData?.name || 'Admin'} • Platform Overview & Analytics</p>
                         </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/admin/feedback-manager')}
+                            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                        >
+                            <FaCommentDots className="w-4 h-4" />
+                            Feedback Manager
+                        </button>
+                        <button
+                            onClick={handleRefresh}
+                            disabled={refreshing}
+                            className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                            title="Refresh Data"
+                        >
+                            <FaSync className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+                        >
+                            <FaSignOutAlt className="w-4 h-4" />
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>
