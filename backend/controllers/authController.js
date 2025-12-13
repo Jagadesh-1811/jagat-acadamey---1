@@ -107,7 +107,9 @@ export const sendOtp = async (req, res) => {
             user.isOtpVerifed = false
 
         await user.save()
-        console.log(`OTP for ${email}: ${otp}`)
+        console.log('\n========================================')
+        console.log(`🔐 OTP for ${email}: ${otp}`)
+        console.log('========================================\n')
         await sendMail(email, otp)
         return res.status(200).json({ message: "Email Successfully send" })
     } catch (error) {
@@ -166,5 +168,38 @@ export const deleteAccount = async (req, res) => {
     } catch (error) {
         console.error('deleteAccount error', error)
         return res.status(500).json({ message: `Delete account error ${error}` })
+    }
+}
+
+// Email Link Sign-up/Sign-in (Passwordless authentication)
+export const emailLinkSignup = async (req, res) => {
+    try {
+        const { name, email, role } = req.body
+
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" })
+        }
+
+        // Check if user already exists
+        let user = await User.findOne({ email })
+
+        if (!user) {
+            // Create new user (no password needed for email link auth)
+            user = await User.create({
+                name: name || email.split('@')[0],
+                email,
+                role: role || 'student',
+                emailVerified: true // Email is verified via Firebase
+            })
+        }
+
+        // Generate token
+        let token = await genToken(user._id)
+
+        return res.status(200).json({ user, token })
+
+    } catch (error) {
+        console.error("emailLinkSignup error:", error)
+        return res.status(500).json({ message: `Email link signup error: ${error}` })
     }
 }

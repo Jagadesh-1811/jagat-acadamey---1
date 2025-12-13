@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 export const chatWithAI = async (req, res) => {
   try {
     const { message } = req.body;
-    
+
     if (!message || !message.trim()) {
       return res.status(400).json({
         success: false,
@@ -19,7 +19,7 @@ export const chatWithAI = async (req, res) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     // Create a context-aware prompt for educational assistance
-    const prompt = `You are an AI assistant for a Learning Management System (LMS). 
+    const prompt = `Welcome to Jagat Academy! You are the official AI assistant for Jagat Academy. 
 Your role is to help students with their courses, assignments, and learning journey.
 Be helpful, encouraging, and provide clear explanations.
 
@@ -71,11 +71,11 @@ export const chatWithImage = async (req, res) => {
 
     // Create prompt
     const prompt = message && message.trim()
-      ? `You are an AI assistant for a Learning Management System. 
+      ? `Welcome to Jagat Academy! You are the official AI assistant for Jagat Academy. 
 The student has uploaded an image and asked: "${message}"
 
 Please analyze the image and provide a helpful educational response:`
-      : `You are an AI assistant for a Learning Management System.
+      : `Welcome to Jagat Academy! You are the official AI assistant for Jagat Academy.
 The student has uploaded an image for analysis.
 
 Please describe what you see in the image and provide any relevant educational insights or explanations:`;

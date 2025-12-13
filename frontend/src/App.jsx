@@ -35,6 +35,17 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminFeedbackManager from './pages/admin/FeedbackManager';
 import AdminLogin from './pages/admin/AdminLogin';
 import Contact from './pages/Contact';
+import VoiceRoom from './components/VoiceRoom';
+import StudentVoiceRequest from './pages/StudentVoiceRequest';
+import TeacherCallRequests from './pages/teacher/TeacherCallRequests';
+import AdminVoiceMonitor from './pages/admin/AdminVoiceMonitor';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import RefundPolicy from './pages/RefundPolicy';
+import EmailLinkAuth from './pages/EmailLinkAuth';
+import FinishSignUp from './pages/FinishSignUp';
+import AdminDoubtSessions from './pages/admin/AdminDoubtSessions';
+
 
 // Admin Route Protection Component
 const AdminProtectedRoute = ({ children }) => {
@@ -88,7 +99,22 @@ function App() {
         <Route path='/admin/feedback-manager' element={<AdminProtectedRoute><AdminFeedbackManager /></AdminProtectedRoute>} />
         <Route path='/admin/dashboard' element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
         <Route path='/contact' element={<Contact />} />
+        <Route path='/voice-request' element={userData?.role === "student" ? <StudentVoiceRequest /> : <Navigate to={"/signup"} />} />
+        <Route path='/voice-room/:roomId' element={userData ? <VoiceRoom /> : <Navigate to={"/signup"} />} />
+        <Route path='/teacher/call-requests' element={userData?.role === "educator" ? <TeacherCallRequests /> : <Navigate to={"/signup"} />} />
+        <Route path='/admin/voice-monitor' element={<AdminProtectedRoute><AdminVoiceMonitor /></AdminProtectedRoute>} />
+        <Route path='/admin/doubt-sessions' element={<AdminProtectedRoute><AdminDoubtSessions /></AdminProtectedRoute>} />
         <Route path='/forgotpassword' element={<ForgotPassword />} />
+
+        {/* Legal Pages */}
+        <Route path='/terms' element={<TermsAndConditions />} />
+        <Route path='/privacy' element={<PrivacyPolicy />} />
+        <Route path='/refund' element={<RefundPolicy />} />
+
+        {/* Email Link Authentication */}
+        <Route path='/email-signin' element={!userData ? <EmailLinkAuth /> : <Navigate to={"/"} />} />
+        <Route path='/finishSignUp' element={<FinishSignUp />} />
+
       </Routes>
 
     </>

@@ -20,6 +20,7 @@ import certificationRouter from "./routes/certificationRoute.js"
 import feedbackRouter from "./routes/feedbackRoute.js"
 import adminAuthRouter from "./routes/adminAuthRoute.js"
 import adminRouter from "./routes/adminRoute.js"
+import voiceRoomRouter from "./routes/voiceRoomRoute.js"
 
 dotenv.config()
 let port = process.env.PORT
@@ -61,6 +62,7 @@ app.use("/api/certification", certificationRouter)
 app.use("/api/feedback", feedbackRouter)
 app.use("/api/admin", adminAuthRouter)
 app.use("/api/admin/data", adminRouter)
+app.use("/api/voice-room", voiceRoomRouter)
 
 
 
@@ -70,7 +72,24 @@ app.get("/", (req, res) => {
 
 connectDb().then(() => {
     app.listen(port, () => {
-        console.log("Server Started ")
+        console.log("Server Started on port", port);
+
+        // Check ZegoCloud credentials
+        const zegoAppId = process.env.ZEGO_APP_ID;
+        const zegoSecret = process.env.ZEGO_SERVER_SECRET;
+
+        console.log('========================================');
+        console.log('ZegoCloud Configuration:');
+        console.log('ZEGO_APP_ID loaded:', zegoAppId ? 'Yes' : 'No', '| Value:', zegoAppId || 'undefined');
+        console.log('ZEGO_SERVER_SECRET loaded:', zegoSecret ? 'Yes (length: ' + zegoSecret.length + ')' : 'No');
+
+        if (!zegoAppId || !zegoSecret) {
+            console.log('⚠️  WARNING: ZegoCloud credentials not configured!');
+            console.log('   Add ZEGO_APP_ID and ZEGO_SERVER_SECRET to backend/.env');
+        } else {
+            console.log('✅ ZegoCloud credentials configured correctly');
+        }
+        console.log('========================================');
     })
 }).catch(err => {
     console.error("Failed to connect to DB:", err);

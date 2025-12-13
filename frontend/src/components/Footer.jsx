@@ -1,53 +1,140 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.jpg"; // replace with actual path
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import logo from '../assets/logo.jpg';
 
 const Footer = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-black text-gray-300 py-10 px-6">
-      <div className="max-w-7xl mx-auto flex lg:items-center items-start justify-center gap-[40px] lg:gap-[150px] flex-col lg:flex-row">
+    <footer className="bg-black text-white">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-        {/* Logo + Description */}
-        <div className="lg:w-[40%] md:w-[50%] w-[100%]">
-          <img src={logo} alt="Logo" className="h-10 mb-3 border-1 rounded-[5px]" />
-          <h2 className="text-xl font-bold text-white mb-3">JAGAT ACADMEY </h2>
-          <p className="text-sm">
-            AI-powered learning platform to help you grow smarter. Learn anything, anytime, anywhere.
-          </p>
+          {/* Brand Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <img src={logo} alt="Jagat Academy" className="w-12 h-12 rounded-lg object-cover" />
+              <h3 className="text-2xl font-bold">JAGAT ACADEMY</h3>
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Empowering learners with quality education.
+              Master new skills, earn certifications, and
+              transform your career with expert-led courses.
+            </p>
+            <div className="flex gap-4 pt-2">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors">
+                <FaFacebook size={20} />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors">
+                <FaTwitter size={20} />
+              </a>
+              <a href="https://www.instagram.com/offical.jagat/" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors">
+                <FaInstagram size={20} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors">
+                <FaLinkedin size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold">Quick Links</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/allcourses" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  All Courses
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/feedback" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Feedback
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold">Legal</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/terms" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/refund" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Refund Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold">Contact Us</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-3 text-gray-400 text-sm">
+                <FaEnvelope className="text-white" />
+                <a href="mailto:official.jagat.services@gmail.com" className="hover:text-white transition-colors">
+                  official.jagat.services@gmail.com
+                </a>
+              </li>
+              <li className="flex items-center gap-3 text-gray-400 text-sm">
+                <FaPhone className="text-white" />
+                <a href="tel:+9182876543210" className="hover:text-white transition-colors">
+                  +91 828765 43210
+                </a>
+              </li>
+              <li className="flex items-start gap-3 text-gray-400 text-sm">
+                <FaMapMarkerAlt className="text-white mt-1" />
+                <span>India</span>
+              </li>
+            </ul>
+          </div>
         </div>
-
-        {/* Quick Links */}
-        <div className="lg:w-[30%] md:w-[100%]">
-          <h3 className="text-white font-semibold mb-2">Quick Links</h3>
-          <ul className="space-y-1 text-sm">
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/")}>Home</li>
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/allcourses")}>Courses</li>
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/login")}>Login</li>
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/profile")}>My Profile</li>
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/about")}>About</li>
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/feedback")}>Feedback</li>
-            <li className="hover:text-white cursor-pointer" onClick={() => navigate("/contact")}>Contact</li>
-
-          </ul>
-        </div>
-
-        {/* Explore Categories */}
-        <div className="lg:w-[30%] md:w-[100%]">
-          <h3 className="text-white font-semibold mb-2">Explore Categories</h3>
-          <ul className="space-y-1 text-sm">
-            <li className="hover:text-white">Web Development</li>
-            <li className="hover:text-white">AI/ML</li>
-            <li className="hover:text-white">Data Science</li>
-            <li className="hover:text-white">UI/UX Design</li>
-          </ul>
-        </div>
-
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-700 mt-10 pt-5 text-sm text-center text-gray-500">
-        © {new Date().getFullYear()} JAGAT ACADEMY All rights reserved.
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-500 text-sm text-center md:text-left">
+              © {currentYear} Jagat Academy. All rights reserved.
+            </p>
+            <p className="text-gray-500 text-xs">
+              Made with ❤️ for learners worldwide
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );

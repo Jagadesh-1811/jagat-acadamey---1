@@ -1,8 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {
+  getAuth,
+  GoogleAuthProvider,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink
+} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,3 +25,15 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Auth and Google Provider
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+
+// Action code settings for email link sign-in
+// URL must be whitelisted in Firebase Console under Authentication > Settings > Authorized domains
+export const getActionCodeSettings = (baseUrl) => ({
+  // URL to redirect back to after email verification
+  url: `${baseUrl}/finishSignUp`,
+  // This must be true for email link sign-in
+  handleCodeInApp: true,
+});
+
+// Export email link functions
+export { sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink };

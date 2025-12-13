@@ -6,6 +6,7 @@ import axios from 'axios'
 import { serverUrl } from '../App'
 import { setUserData, setToken } from '../redux/userSlice'
 import UserFeedbackList from '../components/UserFeedbackList'
+import StreakCounter from '../components/StreakCounter';
 
 function Profile() {
   let { userData, token } = useSelector(state => state.user)
@@ -33,6 +34,10 @@ function Profile() {
   }
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-10 flex flex-col items-center justify-start gap-6">
+      {/* Streak Counter */}
+      <div className="max-w-xl w-full flex justify-end">
+        <StreakCounter />
+      </div>
 
       <div className="bg-white shadow-lg rounded-2xl p-8 max-w-xl w-full relative">
         <FaArrowLeftLong className='absolute top-[8%] left-[5%] w-[22px] h-[22px] cursor-pointer' onClick={() => navigate("/")} />

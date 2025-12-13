@@ -33,3 +33,23 @@ export const getDoubtSessionByCourse = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Get all doubt sessions for admin dashboard
+export const getAllDoubtSessions = async (req, res) => {
+    try {
+        const doubtSessions = await DoubtSession.find()
+            .populate({
+                path: 'course',
+                select: 'title creator',
+                populate: {
+                    path: 'creator',
+                    select: 'name email'
+                }
+            })
+            .sort({ createdAt: -1 })
+            .limit(20);
+        res.status(200).json(doubtSessions);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

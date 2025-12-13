@@ -17,9 +17,9 @@ const Contact = () => {
         {
             name: 'Instagram',
             icon: <FaInstagram className="w-6 h-6" />,
-            link: 'https://instagram.com/jagatacademy',
+            link: 'https://www.instagram.com/offical.jagat/',
             color: 'bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600',
-            handle: '@jagatacademy'
+            handle: '@official.jagat'
         },
         {
             name: 'LinkedIn',
@@ -31,9 +31,9 @@ const Contact = () => {
         {
             name: 'Email',
             icon: <HiMail className="w-6 h-6" />,
-            link: 'mailto:contact@jagatacademy.com',
+            link: 'mailto:official.jagat.services@gmail.com',
             color: 'bg-red-500 hover:bg-red-600',
-            handle: 'contact@jagatacademy.com'
+            handle: 'official.jagat.services@gmail.com'
         }
     ];
 
@@ -83,57 +83,47 @@ const Contact = () => {
             {/* Contact Cards */}
             <section className="py-16 px-6 bg-gray-50">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-3 gap-6 mb-12">
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-                            <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                                <FaEnvelope className="w-8 h-8 text-blue-600" />
+                    <div className="grid md:grid-cols-2 gap-8 mb-12">
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center hover:shadow-lg transition-shadow">
+                            <div className="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                <FaEnvelope className="w-10 h-10 text-blue-600" />
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
-                            <p className="text-gray-600 mb-4">We'll respond within 24 hours</p>
-                            <a href="mailto:contact@jagatacademy.com" className="text-blue-600 font-medium hover:underline">
-                                contact@jagatacademy.com
+                            <h3 className="text-2xl font-semibold text-gray-900 mb-3">Email Us</h3>
+                            <p className="text-gray-600 mb-5 text-lg">We'll respond within 24 hours</p>
+                            <a href="mailto:official.jagat.services@gmail.com" className="text-blue-600 font-medium hover:underline text-lg">
+                                official.jagat.services@gmail.com
                             </a>
                         </div>
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-                            <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                                <FaPhone className="w-8 h-8 text-green-600" />
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center hover:shadow-lg transition-shadow">
+                            <div className="w-20 h-20 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                <FaPhone className="w-10 h-10 text-green-600" />
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
-                            <p className="text-gray-600 mb-4">Mon-Sat, 9am-6pm IST</p>
-                            <a href="tel:+919876543210" className="text-green-600 font-medium hover:underline">
+                            <h3 className="text-2xl font-semibold text-gray-900 mb-3">Call Us</h3>
+                            <p className="text-gray-600 mb-5 text-lg">Mon-Sat, 10am-5pm IST</p>
+                            <a href="tel:+919876543210" className="text-green-600 font-medium hover:underline text-lg">
                                 +91 98765 43210
                             </a>
-                        </div>
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-                            <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                                <FaMapMarkerAlt className="w-8 h-8 text-purple-600" />
-                            </div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Visit Us</h3>
-                            <p className="text-gray-600 mb-4">Our Office Location</p>
-                            <p className="text-purple-600 font-medium">
-                                Hyderabad, Telangana, India
-                            </p>
                         </div>
                     </div>
 
                     {/* Social Links */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Connect With Us</h2>
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid sm:grid-cols-2 gap-6">
                             {socialLinks.map((social, index) => (
                                 <a
                                     key={index}
                                     href={social.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`${social.color} text-white rounded-xl p-5 flex items-center gap-4 transition-all hover:scale-105 hover:shadow-lg`}
+                                    className={`${social.color} text-white rounded-2xl p-8 flex items-center gap-6 transition-all hover:scale-105 hover:shadow-xl`}
                                 >
-                                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                                        {social.icon}
+                                    <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
+                                        <span className="text-3xl">{social.icon}</span>
                                     </div>
                                     <div>
-                                        <p className="font-semibold">{social.name}</p>
-                                        <p className="text-sm text-white/80">{social.handle}</p>
+                                        <p className="font-bold text-xl">{social.name}</p>
+                                        <p className="text-base text-white/90 mt-1">{social.handle}</p>
                                     </div>
                                 </a>
                             ))}

@@ -69,37 +69,55 @@ export const getGrades = async (req, res) => {
 };
 
 
-export const getCurrentUser = async (req,res) => {
+export const getCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select("-password").populate("enrolledCourses")
-         if(!user){
-            return res.status(400).json({message:"user does not found"})
+        if (!user) {
+            return res.status(400).json({ message: "user does not found" })
         }
         return res.status(200).json(user)
     } catch (error) {
         console.log(error);
-        return res.status(400).json({message:"get current user error"})
+        return res.status(400).json({ message: "get current user error" })
     }
 }
 
-export const UpdateProfile = async (req,res) => {
+export const UpdateProfile = async (req, res) => {
     try {
         const userId = req.userId
-        const {name , description} = req.body
+        const { name, description } = req.body
         let photoUrl
-        if(req.file){
-           photoUrl =await uploadOnCloudinary(req.file.path)
+        if (req.file) {
+            photoUrl = await uploadOnCloudinary(req.file.path)
         }
-        const user = await User.findByIdAndUpdate(userId,{name,description,photoUrl})
+        const user = await User.findByIdAndUpdate(userId, { name, description, photoUrl })
 
 
-        if(!user){
-            return res.status(404).json({message:"User not found"})
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
         }
         await user.save()
         return res.status(200).json(user)
     } catch (error) {
-         console.log(error);
-       return res.status(500).json({message:`Update Profile Error  ${error}`})
+        console.log(error);
+        return res.status(500).json({ message: `Update Profile Error  ${error}` })
     }
 }
+
+// Get user profile by ID (public info)
+export const getUserById = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId).select('name email photoUrl role description');
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        return res.status(200).json({ success: true, user });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Error fetching user profile" });
+    }
+}
+

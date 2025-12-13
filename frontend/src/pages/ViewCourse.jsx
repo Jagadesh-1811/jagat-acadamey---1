@@ -44,6 +44,35 @@ function ViewCourse() {
   const [fetchingMaterials, setFetchingMaterials] = useState(true);
   const [courseQuizzes, setCourseQuizzes] = useState([]);
   const [doubtSession, setDoubtSession] = useState(null);
+  const [educatorLiveRoom, setEducatorLiveRoom] = useState(null);
+  const [joiningRoom, setJoiningRoom] = useState(false);
+
+  // Handle joining voice room - calls API first then navigates
+  const handleJoinVoiceRoom = async (roomId) => {
+    if (!roomId) {
+      toast.error("Invalid room ID");
+      return;
+    }
+
+    setJoiningRoom(true);
+    try {
+      const response = await axios.post(
+        `${serverUrl}/api/voice-room/join/${roomId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data.success) {
+        toast.success("Joining room...");
+        navigate(`/voice-room/${roomId}`);
+      }
+    } catch (error) {
+      console.error("Join room error:", error);
+      toast.error(error.response?.data?.message || "Failed to join room");
+    } finally {
+      setJoiningRoom(false);
+    }
+  };
 
   const handleAssignmentSubmit = async (assignmentId) => {
     try {
@@ -219,6 +248,33 @@ function ViewCourse() {
 
   }, [selectedCourseData, token]);
 
+  // Check if educator has a live room (poll every 10 seconds)
+  useEffect(() => {
+    const fetchEducatorLiveRoom = async () => {
+      if (creatorData?._id && isEnrolled && token) {
+        try {
+          const response = await axios.get(
+            `${serverUrl}/api/voice-room/educator/${creatorData._id}/live`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          if (response.data.hasLiveRoom) {
+            setEducatorLiveRoom(response.data.room);
+          } else {
+            setEducatorLiveRoom(null);
+          }
+        } catch (error) {
+          console.error("Error fetching educator live room:", error);
+        }
+      }
+    };
+
+    fetchEducatorLiveRoom();
+    const interval = setInterval(fetchEducatorLiveRoom, 10000);
+
+    return () => clearInterval(interval);
+  }, [creatorData?._id, isEnrolled, token]);
+
+
 
 
 
@@ -341,6 +397,26 @@ function ViewCourse() {
               <a href={doubtSession.meetingLink} target="_blank" rel="noopener noreferrer" className="bg-purple-500 text-white px-6 py-2 rounded hover:bg-purple-700 mt-3 ml-2">
                 Doubt Solving Session
               </a>
+            )}
+            {isEnrolled && (
+              <>
+                {educatorLiveRoom ? (
+                  <button
+                    onClick={() => handleJoinVoiceRoom(educatorLiveRoom.roomId)}
+                    disabled={joiningRoom}
+                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 mt-3 ml-2 flex items-center gap-2 animate-pulse disabled:opacity-50"
+                  >
+                    {joiningRoom ? 'Joining...' : `🔴 Room is Live - Join Now! (${educatorLiveRoom.participantCount} students)`}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => navigate('/voice-request')}
+                    className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-700 mt-3 ml-2 flex items-center gap-2"
+                  >
+                    🎙️ Voice Room
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -488,8 +564,8 @@ function ViewCourse() {
                     }
                   }}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-200 text-left ${lecture.isPreviewFree
-                      ? "hover:bg-gray-100 cursor-pointer border-gray-300"
-                      : "cursor-not-allowed opacity-60 border-gray-200"
+                    ? "hover:bg-gray-100 cursor-pointer border-gray-300"
+                    : "cursor-not-allowed opacity-60 border-gray-200"
                     } ${selectedLecture?.lectureTitle === lecture.lectureTitle
                       ? "bg-gray-100 border-gray-400"
                       : ""
