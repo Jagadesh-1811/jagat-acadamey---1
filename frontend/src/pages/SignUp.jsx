@@ -147,12 +147,7 @@ function SignUp() {
                         {googleLoading ? <ClipLoader size={25} color='black' /> : <><FcGoogle className='text-xl' /> Continue with Google</>}
                     </button>
 
-                    <button
-                        className='w-[80%] h-[40px] bg-blue-50 border border-blue-200 text-blue-700 cursor-pointer flex items-center justify-center gap-2 rounded-[5px] hover:bg-blue-100 transition-colors'
-                        onClick={() => navigate("/email-signin")}
-                    >
-                        📧 Sign in with Email Link
-                    </button>
+                    {/* Removed Sign in with Email Link button */}
 
                     <div className='text-[#6f6f6f]'>Already have an account? <span className='underline underline-offset-1 text-[black] cursor-pointer' onClick={() => navigate("/login")}>Login</span></div>
 

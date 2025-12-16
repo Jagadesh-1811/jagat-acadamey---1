@@ -557,13 +557,13 @@ function ViewCourse() {
               {selectedCourseData?.lectures?.map((lecture, index) => (
                 <button
                   key={index}
-                  disabled={!lecture.isPreviewFree}
+                  disabled={!lecture.isPreviewFree && !isEnrolled}
                   onClick={() => {
-                    if (lecture.isPreviewFree) {
+                    if (lecture.isPreviewFree || isEnrolled) {
                       setSelectedLecture(lecture);
                     }
                   }}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-200 text-left ${lecture.isPreviewFree
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-200 text-left ${(lecture.isPreviewFree || isEnrolled)
                     ? "hover:bg-gray-100 cursor-pointer border-gray-300"
                     : "cursor-not-allowed opacity-60 border-gray-200"
                     } ${selectedLecture?.lectureTitle === lecture.lectureTitle
@@ -572,7 +572,7 @@ function ViewCourse() {
                     }`}
                 >
                   <span className="text-lg text-gray-700">
-                    {lecture.isPreviewFree ? <FaPlayCircle /> : <FaLock />}
+                    {(lecture.isPreviewFree || isEnrolled) ? <FaPlayCircle /> : <FaLock />}
                   </span>
                   <span className="text-sm font-medium text-gray-800">
                     {lecture.lectureTitle}

@@ -42,7 +42,7 @@ import AdminVoiceMonitor from './pages/admin/AdminVoiceMonitor';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
-import EmailLinkAuth from './pages/EmailLinkAuth';
+
 import FinishSignUp from './pages/FinishSignUp';
 import AdminDoubtSessions from './pages/admin/AdminDoubtSessions';
 
@@ -112,7 +112,7 @@ function App() {
         <Route path='/refund' element={<RefundPolicy />} />
 
         {/* Email Link Authentication */}
-        <Route path='/email-signin' element={!userData ? <EmailLinkAuth /> : <Navigate to={"/"} />} />
+        {/* Email Link Authentication removed */}
         <Route path='/finishSignUp' element={<FinishSignUp />} />
 
       </Routes>

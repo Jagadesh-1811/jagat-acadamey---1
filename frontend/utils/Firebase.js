@@ -10,7 +10,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDpspZAjCShQtuph-NFRw7fSQwKblJLHyI",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "jagatacademy-36462.firebaseapp.com",
   projectId: "jagatacademy-36462",
   storageBucket: "jagatacademy-36462.firebasestorage.app",
