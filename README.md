@@ -214,7 +214,7 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 │   • Razorpay Payment Integration                         │
 │   • ZegoCloud Token Generation                           │
 │   • Google AI Integration                                │
-│   • Email Service (Brevo SMTP)                           │
+│                                                          │
 └────────────────────┬────────────────────────────────────┘
                      │ Mongoose ODM
 ┌────────────────────┴────────────────────────────────────┐
@@ -430,7 +430,7 @@ jagat-acadamey---1/
 
 
 3. **Add Environment Variables**
-   - Add all variables from `.env` file
+   - Add all variables from the `.env` file
    - Set `NODE_ENV=production`
 
 
@@ -481,7 +481,7 @@ Contributions are welcome! Here's how you can help:
    ```
 3. **Commit your changes**
    ```bash
-   git commit -m 'Add some AmazingFeature'
+   git commit -m 'Add some AmazingFeature.'
    ```
 4. **Push to the branch**
    ```bash
@@ -549,16 +549,16 @@ Special thanks to the open-source community for their amazing tools and resource
 
 
 
-## 🌟 Support
+##  Support
 
 
 If you find this project helpful, please consider:
 
 
-- ⭐ Giving it a star on GitHub
-- 🐛 Reporting bugs and suggesting features
-- 📢 Sharing it with others
-- 🤝 Contributing to its development
+-  Giving it a star on GitHub
+-  Reporting bugs and suggesting features
+-  Sharing it with others
+-  Contributing to its development
 
 
 ---
