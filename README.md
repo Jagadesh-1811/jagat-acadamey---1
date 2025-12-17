@@ -4,532 +4,585 @@
 
 Live Demo=https://jagat-acadamey-1-1.onrender.com
 
----
-## Table of Contents
+# 🎓 Jagat Academy - Learning Management System
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Technology Stack](#technology-stack)
-- [System Architecture](#system-architecture)
-- [Installation Guide](#installation-guide)
-- [Environment Configuration](#environment-configuration)
-- [Deployment Instructions](#deployment-instructions)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
----
 
-## Overview
 
-Jagat Academy is a comprehensive, full-stack Learning Management System (LMS) designed to facilitate seamless digital education. The platform connects educators and students through an intuitive interface, offering course management, assignments, quizzes, payment integration, and AI-powered assistance.
 
-### Core Capabilities
 
-- Complete learning ecosystem with courses, assignments
-- AI-powered chatbot for instant doubt resolution
-- Secure payment gateway integration via Razorpay
-- Responsive design compatible with all devices
-- Modern UI/UX with smooth animations
-- Role-based access control with JWT authentication
-- Cloud-based media storage and delivery
+## 📋 Table of Contents
+
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Technology Stack](#-technology-stack)
+- [System Architecture](#-system-architecture)
+- [Screenshots](#-screenshots)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+- [Project Structure](#-project-structure)
+- [API Documentation](#-api-documentation)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
+
 
 ---
 
-## Key Features
 
-### For Educators
+## 🌟 Overview
 
-**Course Management**
-- Create and manage comprehensive courses
-- Set course duration, pricing, and descriptions
-- Upload course thumbnails and promotional materials
 
-**Content Delivery**
-- Upload educational materials (PDFs, PPTs, Videos)
-- Preview uploaded content before publishing
-- Organize materials by topics and modules
+**Jagat Academy** is a comprehensive, production-ready Learning Management System designed to bridge the gap between educators and students through an intuitive, feature-rich digital platform. Built with modern web technologies, it offers a complete ecosystem for online education with advanced features like AI-powered doubt resolution, real-time voice communication, secure payments, and comprehensive course management.
 
-**Student Management**
-- View enrolled students
-- Track student progress and engagement
-- Manage student submissions and grades
 
-**Assessment Tools**
-- Create assignments with flexible submission options
-- Support for GitHub links and file uploads
-- Grade submissions using A-D scale
-- Provide detailed feedback to students
+### 🎯 Project Goals
 
-**Interactive Sessions**
-- Schedule daily doubt-solving sessions
-- Share meeting links (Google Meet, Zoom, etc.)
-- Create monthly quizzes with rules and guidelines
-- Host live Q&A sessions
 
-### For Students
+- Provide educators with powerful tools to create and manage courses
+- Offer students an engaging, interactive learning experience
+- Enable seamless communication through AI chatbot and live voice rooms
+- Ensure secure payment processing for course enrollments
+- Deliver a responsive, accessible platform across all devices
 
-**Course Access**
-- Browse available courses
-- Enroll using secure payment gateway
-- Access course materials anytime
-- Download resources for offline learning
-
-**Learning Tools**
-- Preview course materials before download
-- Submit assignments via multiple methods
-- View grades and instructor feedback
-- Track learning progress
-
-**Assessment & Rewards**
-- Participate in monthly quizzes
-- Earn voucher rewards for high performance
-- Receive certificates upon course completion
-- Download resume templates
-
-**Support System**
-- Access AI chatbot for instant doubt resolution
-- Join course-specific discussion forums
-- Attend scheduled doubt-solving sessions
-- Connect with instructors and peers
-
-### Additional Features
-
-- Discussion forums for each course
-- Real-time notifications for assignments and quizzes
-- Progress tracking dashboard
-- Gamification elements (confetti effects on completion)
-- Secure authentication and authorization
-- Mobile-responsive interface
 
 ---
 
-## Technology Stack
 
-### Frontend Technologies
+## ✨ Key Features
 
-- **React 18** - Modern JavaScript library for building user interfaces
-- **Vite** - Next-generation frontend build tool for fast development
-- **Tailwind CSS** - Utility-first CSS framework for responsive design
-- **Framer Motion** - Production-ready animation library
-- **Axios** - Promise-based HTTP client for API requests
-- **React Router** - Declarative routing for React applications
-- **React Icons** - Popular icon library
 
-### Backend Technologies
+### 👨‍🏫 For Educators
 
-- **Node.js** - JavaScript runtime environment
-- **Express.js** - Fast, minimalist web framework
-- **MongoDB** - NoSQL database for flexible data storage
-- **Mongoose** - MongoDB object modeling tool
-- **JWT (JSON Web Tokens)** - Secure authentication mechanism
-- **Bcrypt** - Password hashing library
-- **Multer** - Middleware for file uploads
-- **Nodemailer** - Email sending functionality
+
+#### Course Management
+- ✅ Create unlimited courses with rich descriptions
+- ✅ Upload course thumbnails and promotional materials
+- ✅ Set pricing, difficulty levels (Beginner/Intermediate/Advanced)
+- ✅ Publish/unpublish courses with one click
+- ✅ Track enrolled students and engagement metrics
+
+
+#### Content Delivery
+- ✅ Upload educational materials (PDFs, PPTs, Videos)
+- ✅ Create structured lectures with video content
+- ✅ Preview content before publishing
+- ✅ Organize materials by topics and modules
+- ✅ Cloud-based storage via Cloudinary
+
+
+#### Assessment Tools
+- ✅ Create assignments with flexible submission options
+- ✅ Support GitHub links and file uploads
+- ✅ Grade submissions using A-D scale
+- ✅ Provide detailed feedback to students
+- ✅ Monthly quizzes with rules and guidelines
+
+
+#### Interactive Sessions
+- ✅ Schedule daily doubt-solving sessions
+- ✅ Share meeting links (Google Meet, Zoom, etc.)
+- ✅ Real-time voice rooms (ZegoCloud integration)
+- ✅ Weekend-only voice call availability
+- ✅ Manage student call requests
+
+
+### 👨‍🎓 For Students
+
+
+#### Learning Experience
+- ✅ Browse comprehensive course catalog
+- ✅ Enroll via secure Razorpay payment gateway
+- ✅ Access all course materials 24/7
+- ✅ Download resources for offline learning
+- ✅ Track learning progress with dashboard
+
+
+#### Interactive Tools
+- ✅ **AI Chatbot** for instant doubt resolution (Google Gemini)
+- ✅ Submit assignments via multiple methods
+- ✅ View grades and instructor feedback
+- ✅ Participate in monthly quizzes
+- ✅ Join live voice rooms on weekends
+
+
+#### Engagement & Rewards
+- ✅ Earn certificates upon course completion
+- ✅ Win voucher rewards for high quiz performance
+- ✅ Leave course reviews and ratings
+- ✅ Download resume templates
+- ✅ Gamification elements (confetti animations)
+
+
+### 🛡️ For Administrators
+
+
+#### Dashboard & Analytics
+- ✅ Real-time statistics (students, educators, revenue)
+- ✅ User activity feed and enrollment trends
+- ✅ Visual analytics with Recharts
+- ✅ Feedback and issue management
+- ✅ Voice room monitoring
+- ✅ Doubt session oversight
+
+
+### 🤖 Advanced Features
+
+
+- **🎙️ Real-Time Voice Rooms** - ZegoCloud integration with custom Token04 generation
+- **🧠 AI-Powered Chat** - Google Generative AI for instant doubt resolution for students only
+- **💳 Secure Payments** - Razorpay integration (Test Mode) with Order Status Verification
+- **📧 Email Notifications** - Brevo SMTP for OTP, enrollments, and updates
+- **🔐 Multi-Auth** - JWT, Google OAuth, Firebase Email Link, OTP-based reset
+- **📱 Responsive Design** - Tailwind CSS with mobile-first approach
+- **🎨 Smooth Animations** - Framer Motion for enhanced UX
+
+
+---
+
+
+## 🛠️ Technology Stack
+
+
+### Frontend
+
+
+| Technology | Purpose | Version |
+|-----------|---------|---------|
+| **React** | UI Library | 19.1.0 |
+| **Vite** | Build Tool | 6.3.5 |
+| **Redux Toolkit** | State Management | 2.8.2 |
+| **React Router** | Routing | 7.6.2 |
+| **Tailwind CSS** | Styling | 4.1.10 |
+| **Framer Motion** | Animations | 12.23.24 |
+| **Axios** | HTTP Client | 1.12.2 |
+| **Firebase** | Authentication | 11.10.0 |
+| **ZegoCloud UIKit** | Voice Rooms | 2.17.1 |
+| **Recharts** | Data Visualization | 3.1.0 |
+
+
+### Backend
+
+
+| Technology | Purpose | Version |
+|-----------|---------|---------|
+| **Node.js** | Runtime | Latest LTS |
+| **Express.js** | Web Framework | 5.1.0 |
+| **MongoDB** | Database | 8.16.0 |
+| **Mongoose** | ODM | 8.16.0 |
+| **JWT** | Authentication | 9.0.2 |
+| **Bcrypt** | Password Hashing | 3.0.2 |
+| **Multer** | File Upload | 2.0.1 |
+| **Nodemailer** | Email Service | 7.0.5 |
+| **Razorpay** | Payment Gateway | 2.9.6 |
+| **Cloudinary** | Media Storage | 2.7.0 |
+| **Google Generative AI** | AI Chatbot | 0.24.1 |
+
 
 ### Third-Party Services
 
-- **MongoDB Atlas** - Cloud-hosted MongoDB database
-- **Cloudinary** - Cloud storage for images, videos, and documents
+
+- **MongoDB Atlas** - Cloud-hosted NoSQL database
+- **Cloudinary** - Media storage and CDN delivery
 - **Razorpay** - Payment gateway for course enrollments
-- **AI Chatbot API** - Intelligent doubt-solving assistant
+- **Brevo (Sendinblue)** - SMTP email service
+- **Google Gemini AI** - AI-powered chatbot
+- **ZegoCloud** - Real-time voice communication
+- **Render.com** - Hosting and deployment
 
-### Development Tools
-
-- **Git** - Version control system
-
----
-
-## System Architecture
-
-The application follows a three-tier architecture pattern:
-
-### Architecture Layers
-
-**Presentation Layer (Frontend)**
-- React-based single-page application
-- Handles user interface and interactions
-- Communicates with backend via REST APIs
-
-**Application Layer (Backend)**
-- Express.js server handling business logic
-- JWT-based authentication middleware
-- RESTful API endpoints
-- Integration with external services
-
-**Data Layer**
-- MongoDB database for persistent storage
-- Cloudinary for media file storage
-- Caching for improved performance
-
-### Data Flow
-
-1. User interacts with React frontend
-2. Frontend sends HTTP requests to Express backend
-3. Backend validates requests using JWT middleware
-4. Business logic processes the request
-5. Database operations performed via Mongoose
-6. External services called when needed (Razorpay, Cloudinary)
-7. Response sent back to frontend
-8. UI updates based on response data
-
-For detailed architecture diagrams, please refer to:
-- `docs/architecture-diagram.md` - System architecture flowchart
-- `docs/database-schema.md` - Database entity relationships
-- `docs/user-flows.md` - User journey flowcharts
 
 ---
 
-## Installation Guide
+
+## 🏗️ System Architecture
+
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  PRESENTATION LAYER                      │
+│   React 19 + Vite + Redux Toolkit + React Router        │
+│   (Tailwind CSS, Framer Motion, Firebase Auth)          │
+└────────────────────┬────────────────────────────────────┘
+                     │ REST APIs (HTTPS)
+┌────────────────────┴────────────────────────────────────┐
+│                  APPLICATION LAYER                       │
+│   Node.js + Express.js                                   │
+│   • JWT Authentication Middleware                        │
+│   • 18 Business Logic Controllers                        │
+│   • Razorpay Payment Integration                         │
+│   • ZegoCloud Token Generation                           │
+│   • Google AI Integration                                │
+│   • Email Service (Brevo SMTP)                           │
+└────────────────────┬────────────────────────────────────┘
+                     │ Mongoose ODM
+┌────────────────────┴────────────────────────────────────┐
+│                     DATA LAYER                           │
+│   • MongoDB Atlas (17 Collections)                       │
+│   • Cloudinary (Media Storage)                           │
+│   • ZegoCloud Infrastructure                             │
+└─────────────────────────────────────────────────────────┘
+```
+
+
+### Architecture Highlights
+
+
+- **Three-Tier Architecture** for scalability and maintainability
+- **RESTful API Design** with 100+ endpoints across 18 route groups
+- **Role-Based Access Control** (Student, Educator, Admin)
+- **Stateless Authentication** using JWT with 7-day expiry
+- **Cloud-Native** with MongoDB Atlas and Cloudinary CDN
+
+
+---
+
+
+## 📸 Screenshots
+
+
+*Coming Soon - Screenshots of the application will be added here*
+
+
+---
+
+
+## 🚀 Getting Started
+
 
 ### Prerequisites
 
-Before installation, ensure you have:
-- Node.js version 16.x or higher
-- npm or yarn package manager
-- MongoDB Atlas account
-- Cloudinary account
-- Razorpay account (for payment features)
-- Git installed on your system
 
-### Step 1: Clone Repository
+Before you begin, ensure you have the following installed:
+
+
+- **Node.js** (v16.x or higher) - [Download](https://nodejs.org/)
+- **npm** or **yarn** - Package manager
+- **Git** - Version control
+- **MongoDB Atlas Account** - [Sign up](https://www.mongodb.com/cloud/atlas)
+- **Cloudinary Account** - [Sign up](https://cloudinary.com/)
+- **Razorpay Account** - [Sign up](https://razorpay.com/) (for payment features)
+
+
+### Installation
+
+
+#### 1️⃣ Clone the Repository
+
 
 ```bash
 git clone https://github.com/Jagadesh-1811/jagat-acadamey---1.git
 cd jagat-acadamey---1
 ```
 
-### Step 2: Backend Setup
+
+#### 2️⃣ Backend Setup
+
 
 ```bash
 # Navigate to backend directory
 cd backend
 
+
 # Install dependencies
 npm install
 
-# Create environment file
-cp .env.example .env
 
-# Edit .env file with your credentials
-# (See Environment Configuration section below)
+# Create .env file (see Environment Variables section below)
+# Copy your environment variables
+
 
 # Start development server
 npm run dev
 ```
 
+
 The backend server will start on `http://localhost:5000`
 
-### Step 3: Frontend Setup
+
+#### 3️⃣ Frontend Setup
+
 
 ```bash
 # Navigate to frontend directory (from project root)
 cd frontend
 
+
 # Install dependencies
 npm install
 
-# Create environment file
-cp .env.example .env
 
-# Edit .env file with your credentials
+# Create .env file (see Environment Variables section below)
+# Copy your environment variables
+
 
 # Start development server
 npm run dev
 ```
 
+
 The frontend application will start on `http://localhost:5173`
 
-### Step 4: Verify Installation
-
-- Open browser and navigate to `http://localhost:5173`
-- You should see the Jagat Academy landing page
-- Try registering a new account to verify database connection
-- Check browser console for any errors
-
----
-
-## Environment Configuration
-
-### Backend Environment Variables
-
-Create a `.env` file in the `backend` directory:
-
-```plaintext
-PORT=5000
-NODE_ENV=development
-
-MONGODB_URI=your_mongodb_connection_string
-DB_NAME=jagat_academy
-
-JWT_SECRET=your_super_secure_jwt_secret_key_here
-JWT_EXPIRE=7d
-JWT_COOKIE_EXPIRE=7
-
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-
-RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_EMAIL=your_email@gmail.com
-SMTP_PASSWORD=your_app_specific_password
-
-CHATBOT_API_KEY=your_chatbot_api_key
-CHATBOT_API_URL=your_chatbot_api_endpoint
-
-FRONTEND_URL=http://localhost:5173
-```
-
-### Frontend Environment Variables
-
-Create a `.env` file in the `frontend` directory:
-
-```plaintext
-VITE_API_URL=http://localhost:5000/api
-VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
-VITE_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
-```
-
-### Obtaining API Keys
-
-**MongoDB Atlas**
-1. Create account at mongodb.com
-2. Create new cluster
-3. Get connection string from "Connect" button
-
-**Cloudinary**
-1. Sign up at cloudinary.com
-2. Navigate to Dashboard
-3. Copy Cloud Name, API Key, and API Secret
-
-**Razorpay**
-1. Create account at razorpay.com
-2. Go to Settings > API Keys
-3. Generate Test/Live keys
 
 ---
 
 
-## Deployment Instructions
 
-### Deploy Backend to Render
 
-1. Create account on Render.com
-2. Click "New +" and select "Web Service"
-3. Connect your GitHub repository
-4. Configure service:
-   - **Name:** jagat-academy-backend
-   - **Environment:** Node
-   - **Build Command:** `cd backend && npm install`
-   - **Start Command:** `cd backend && npm start`
-5. Add environment variables from your `.env` file
-6. Click "Create Web Service"
-7. Wait for deployment to complete
-8. Copy the deployed URL
+## 📂 Project Structure
 
-### Deploy Frontend to Render
-
-1. Click "New +" and select "Static Site"
-2. Connect your GitHub repository
-3. Configure site:
-   - **Name:** jagat-academy-frontend
-   - **Build Command:** `cd frontend && npm install && npm run build`
-   - **Publish Directory:** `frontend/dist`
-4. Add environment variables:
-   - Update `VITE_API_URL` with backend URL
-5. Click "Create Static Site"
-6. Wait for deployment to complete
-
-### Post-Deployment Steps
-
-1. Update CORS settings in backend to allow frontend domain
-2. Update `FRONTEND_URL` in backend environment variables
-3. Test all features on deployed application
-4. Monitor logs for any errors
-5. Set up custom domain (optional)
-
----
-
-## Project Structure
 
 ```
 jagat-acadamey---1/
-│
 ├── backend/
-│   ├── config/
-│   │   └── db.js              # Database configuration
-│   ├── controllers/
+│   ├── configs/
+│   │   ├── db.js                  # MongoDB connection
+│   │   ├── Mail.js                # Email configuration (Brevo)
+│   │   ├── cloudinary.js          # Cloudinary setup
+│   │   └── token.js               # JWT token generation
+│   ├── controllers/               # Business logic (18 controllers)
 │   │   ├── authController.js
+│   │   ├── userController.js
 │   │   ├── courseController.js
-│   │   ├── materialController.js
-│   │   ├── assignmentController.js
-│   │   └── paymentController.js
-│   ├── middleware/
-│   │   ├── auth.js            # JWT authentication
-│   │   ├── errorHandler.js
-│   │   └── upload.js          # File upload middleware
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Course.js
-│   │   ├── Material.js
-│   │   ├── Assignment.js
-│   │   └── Payment.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── courseRoutes.js
-│   │   ├── materialRoutes.js
-│   │   ├── assignmentRoutes.js
-│   │   └── paymentRoutes.js
-│   ├── utils/
-│   │   ├── cloudinary.js      # Cloudinary configuration
-│   │   └── helpers.js
-│   ├── .env
-│   ├── server.js
+│   │   ├── voiceRoomController.js # ZegoCloud integration
+│   │   ├── aiChatController.js    # Google AI chatbot
+│   │   ├── adminController.js
+│   │   └── ... (more controllers)
+│   ├── models/                    # Mongoose schemas (17 models)
+│   │   ├── userModel.js
+│   │   ├── courseModel.js
+│   │   ├── voiceRoomModel.js
+│   │   ├── callRequestModel.js
+│   │   └── ... (more models)
+│   ├── routes/                    # Express routes (18 route files)
+│   │   ├── authRoute.js
+│   │   ├── courseRoute.js
+│   │   ├── voiceRoomRoute.js
+│   │   └── ... (more routes)
+│   ├── middlewares/
+│   │   └── auth.js                # JWT authentication middleware
+│   ├── index.js                   # Express server entry point
 │   └── package.json
 │
 ├── frontend/
 │   ├── public/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Layout/
-│   │   │   ├── Course/
-│   │   │   ├── Assignment/
-│   │   │   └── Common/
-│   │   ├── pages/
+│   │   ├── components/            # Reusable components
+│   │   │   ├── VoiceRoom.jsx
+│   │   │   ├── AIChatbot.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── ... (more components)
+│   │   ├── pages/                 # Route pages
 │   │   │   ├── Home.jsx
 │   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── CourseDetail.jsx
-│   │   │   └── Profile.jsx
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx
-│   │   ├── services/
-│   │   │   └── api.js         # API calls
+│   │   │   ├── ViewCourse.jsx
+│   │   │   ├── admin/
+│   │   │   │   ├── AdminDashboard.jsx
+│   │   │   │   └── AdminVoiceMonitor.jsx
+│   │   │   └── teacher/
+│   │   │       ├── Dashboard.jsx
+│   │   │       └── CreateCourse.jsx
+│   │   ├── redux/                 # Redux Toolkit slices
+│   │   │   ├── store.js
+│   │   │   ├── userSlice.js
+│   │   │   ├── courseSlice.js
+│   │   │   └── ... (more slices)
+│   │   ├── customHooks/           # Custom React hooks
 │   │   ├── utils/
-│   │   │   └── helpers.js
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── .env
-│   ├── vite.config.js
-│   └── package.json
+│   │   │   └── Firebase.js        # Firebase configuration
+│   │   ├── App.jsx                # Main app component
+│   │   ├── main.jsx               # React entry point
+│   │   └── index.css              # Global styles
+│   ├── package.json
+│   └── vite.config.js
 │
-├── docs/
-│   ├── architecture-diagram.md
-│   ├── database-schema.md
-│   └── user-flows.md
-│
-├── .gitignore
 ├── README.md
 └── LICENSE
 ```
 
+
 ---
 
-## Contributing
 
-Contributions are welcome and appreciated! Here's how you can contribute:
+
+
+
+
+
+
+## 🌐 Deployment
+
+
+### Backend Deployment (Render.com)
+
+
+1. **Create a Web Service on Render**
+   - Connect your GitHub repository
+   - Select the `backend` directory
+
+
+2. **Configure Build Settings**
+   ```
+   Build Command: cd backend && npm install
+   Start Command: cd backend && npm start
+   ```
+
+
+3. **Add Environment Variables**
+   - Add all variables from `.env` file
+   - Set `NODE_ENV=production`
+
+
+4. **Deploy**
+   - Click "Create Web Service"
+   - Copy the deployed URL
+
+
+### Frontend Deployment (Render/Firebase)
+
+
+#### Option 1: Render (Static Site)
+1. Create a Static Site on Render
+2. Configure:
+   ```
+   Build Command: cd frontend && npm install && npm run build
+   Publish Directory: frontend/dist
+   ```
+3. Add environment variables
+4. Deploy
+
+
+#### Option 2: Firebase Hosting
+```bash
+cd frontend
+npm install -g firebase-tools
+firebase login
+firebase init hosting
+npm run build
+firebase deploy
+```
+
+
+#
+## 🤝 Contributing
+
+
+Contributions are welcome! Here's how you can help:
+
 
 ### How to Contribute
 
+
 1. **Fork the repository**
-   - Click the "Fork" button at the top right
-
-2. **Clone your fork**
+2. **Create a feature branch**
    ```bash
-   git clone https://github.com/your-username/jagat-acadamey---1.git
-   cd jagat-acadamey---1
+   git checkout -b feature/AmazingFeature
    ```
-
-3. **Create a feature branch**
+3. **Commit your changes**
    ```bash
-   git checkout -b feature/YourFeatureName
+   git commit -m 'Add some AmazingFeature'
    ```
-
-4. **Make your changes**
-   - Write clean, maintainable code
-   - Follow existing code style
-   - Add comments where necessary
-
-5. **Test your changes**
-   - Ensure all existing tests pass
-   - Add new tests for new features
-
-6. **Commit your changes**
+4. **Push to the branch**
    ```bash
-   git add .
-   git commit -m "Add: Brief description of your changes"
+   git push origin feature/AmazingFeature
    ```
+5. **Open a Pull Request**
 
-7. **Push to your fork**
-   ```bash
-   git push origin feature/YourFeatureName
-   ```
-
-8. **Create Pull Request**
-   - Go to the original repository
-   - Click "New Pull Request"
-   - Provide detailed description of changes
 
 ### Contribution Guidelines
 
-- Write clear, descriptive commit messages
+
+- Write clean, maintainable code
+- Follow existing code style and conventions
+- Add comments for complex logic
 - Update documentation for new features
-- Follow the existing project structure
-- Ensure code is properly formatted
 - Test thoroughly before submitting PR
-- Be respectful and constructive in discussions
+- Be respectful in discussions
+
 
 ---
 
-## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+## 📄 License
+
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
 
 ### MIT License Summary
 
-- Commercial use allowed
-- Modification allowed
-- Distribution allowed
-- Private use allowed
-- No liability
-- No warranty
+
+✅ Commercial use allowed  
+✅ Modification allowed  
+✅ Distribution allowed  
+✅ Private use allowed  
+⚠️ No liability  
+⚠️ No warranty
+
 
 ---
 
-## Acknowledgments
+
+##  Acknowledgments
+
 
 This project was built using excellent open-source technologies:
 
-- React.js - User interface library
-- Express.js - Backend framework
-- MongoDB - Database solution
-- Cloudinary - Media storage
-- Razorpay - Payment gateway
-- Tailwind CSS - CSS framework
-- Framer Motion - Animation library
 
-Special thanks to the open-source community for their valuable tools and resources.
+- **React.js** - UI library
+- **Express.js** - Backend framework
+- **MongoDB** - Database
+- **Tailwind CSS** - Styling framework
+- **Framer Motion** - Animation library
+- **ZegoCloud** - Real-time communication
+- **Google Gemini AI** - AI capabilities
+- **Razorpay** - Payment processing
+- **Cloudinary** - Media storage
+
+
+Special thanks to the open-source community for their amazing tools and resources.
+
 
 ---
 
-## Support
+
+
+
+## 🌟 Support
+
 
 If you find this project helpful, please consider:
-- Giving it a star on GitHub
-- Sharing it with others
-- Contributing to its development
-- Reporting bugs and suggesting features
+
+
+- ⭐ Giving it a star on GitHub
+- 🐛 Reporting bugs and suggesting features
+- 📢 Sharing it with others
+- 🤝 Contributing to its development
+
 
 ---
 
-**Made with dedication by Jagadesh**
+
+
+
+---
+
+
+
+
+
+
+**Made with ❤️ by Jagadesh**
+
 
 **© 2025 Jagat Academy. All rights reserved.**
+
+
+
+
+
+
+
