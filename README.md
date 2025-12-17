@@ -142,45 +142,44 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 ### Frontend
 
 
-| Technology | Purpose | Version |
-|-----------|---------|---------|
-| **React** | UI Library | 19.1.0 |
-| **Vite** | Build Tool | 6.3.5 |
-| **Redux Toolkit** | State Management | 2.8.2 |
-| **React Router** | Routing | 7.6.2 |
-| **Tailwind CSS** | Styling | 4.1.10 |
-| **Framer Motion** | Animations | 12.23.24 |
-| **Axios** | HTTP Client | 1.12.2 |
-| **Firebase** | Authentication | 11.10.0 |
-| **ZegoCloud UIKit** | Voice Rooms | 2.17.1 |
-| **Recharts** | Data Visualization | 3.1.0 |
+| Technology | Purpose | 
+|-----------|---------|
+| **React** | UI Library | 
+| **Vite** | Build Tool | 
+| **Redux Toolkit** | State Management |
+| **React Router** | Routing | 
+| **Tailwind CSS** | Styling | 
+| **Framer Motion** | Animations | 
+| **Axios** | HTTP Client | 
+| **Firebase** | Authentication | 
+| **ZegoCloud UIKit** | Voice Rooms | 
+| **Recharts** | Data Visualization | 
 
 
 ### Backend
 
 
-| Technology | Purpose | Version |
-|-----------|---------|---------|
-| **Node.js** | Runtime | Latest LTS |
-| **Express.js** | Web Framework | 5.1.0 |
-| **MongoDB** | Database | 8.16.0 |
-| **Mongoose** | ODM | 8.16.0 |
-| **JWT** | Authentication | 9.0.2 |
-| **Bcrypt** | Password Hashing | 3.0.2 |
-| **Multer** | File Upload | 2.0.1 |
-| **Nodemailer** | Email Service | 7.0.5 |
-| **Razorpay** | Payment Gateway | 2.9.6 |
-| **Cloudinary** | Media Storage | 2.7.0 |
-| **Google Generative AI** | AI Chatbot | 0.24.1 |
+| Technology | Purpose | 
+|-----------|---------|
+| **Node.js** | Runtime | 
+| **Express.js** | Web Framework | 
+| **MongoDB** | Database | 
+| **Mongoose** | ODM | 
+| **JWT** | Authentication | 
+| **Bcrypt** | Password Hashing | 
+| **Multer** | File Upload | 
+| **Nodemailer** | Email Service | 
+| **Razorpay** | Payment Gateway |
+| **Cloudinary** | Media Storage | 
+| **Google Generative AI** | AI Chatbot | 
 
 
 ### Third-Party Services
 
 
 - **MongoDB Atlas** - Cloud-hosted NoSQL database
-- **Cloudinary** - Media storage and CDN delivery
+- **Cloudinary** - Media storage 
 - **Razorpay** - Payment gateway for course enrollments
-- **Brevo (Sendinblue)** - SMTP email service
 - **Google Gemini AI** - AI-powered chatbot
 - **ZegoCloud** - Real-time voice communication
 - **Render.com** - Hosting and deployment
