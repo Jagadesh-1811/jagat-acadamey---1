@@ -20,15 +20,13 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 - [System Architecture](#-system-architecture)
 - [Screenshots](#-screenshots)
 - [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Environment Variables](#environment-variables)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
 - [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
 - [Deployment](#-deployment)
 - [Contributing](#-contributing)
 - [License](#-license)
-- [Contact](#-contact)
+
 
 
 ---
