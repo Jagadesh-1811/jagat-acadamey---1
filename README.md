@@ -4,12 +4,6 @@
 
 Live Demo=https://jagat-acadamey-1-1.onrender.com
 
-# 🎓 Jagat Academy - Learning Management System
-
-
-
-
-
 
 ## 📋 Table of Contents
 
