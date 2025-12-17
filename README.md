@@ -128,8 +128,7 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 - **🎙️ Real-Time Voice Rooms** - ZegoCloud integration with custom Token04 generation
 - **🧠 AI-Powered Chat** - Google Generative AI for instant doubt resolution for students only
 - **💳 Secure Payments** - Razorpay integration (Test Mode) with Order Status Verification
-- **📧 Email Notifications** - Brevo SMTP for OTP, enrollments, and updates
-- **🔐 Multi-Auth** - JWT, Google OAuth, Firebase Email Link, OTP-based reset
+- **🔐 Multi-Auth** - JWT, Google OAuth, OTP-based reset
 - **📱 Responsive Design** - Tailwind CSS with mobile-first approach
 - **🎨 Smooth Animations** - Framer Motion for enhanced UX
 
