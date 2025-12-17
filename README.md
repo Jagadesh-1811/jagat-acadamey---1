@@ -125,7 +125,7 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 ### 🤖 Advanced Features
 
 
-- **🎙️ Real-Time Voice Rooms** - ZegoCloud integration with custom Token04 generation
+- **🎙️ Real-Time Voice Rooms** -ZegoCloud UIKit SDK for pre-built voice room interface
 - **🧠 AI-Powered Chat** - Google Generative AI for instant doubt resolution for students only
 - **💳 Secure Payments** - Razorpay integration (Test Mode) with Order Status Verification
 - **🔐 Multi-Auth** - JWT, Google OAuth, OTP-based reset
