@@ -5,7 +5,7 @@
 Live Demo=https://jagat-acadamey-1-1.onrender.com
 
 
-## 📋 Table of Contents
+##  Table of Contents
 
 
 - [Overview](#-overview)
@@ -26,13 +26,13 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 ---
 
 
-## 🌟 Overview
+##  Overview
 
 
 **Jagat Academy** is a comprehensive, production-ready Learning Management System designed to bridge the gap between educators and students through an intuitive, feature-rich digital platform. Built with modern web technologies, it offers a complete ecosystem for online education with advanced features like AI-powered doubt resolution, real-time voice communication, secure payments, and comprehensive course management.
 
 
-### 🎯 Project Goals
+###  Project Goals
 
 
 - Provide educators with powerful tools to create and manage courses
@@ -45,98 +45,98 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 ---
 
 
-## ✨ Key Features
+##  Key Features
 
 
-### 👨‍🏫 For Educators
+###  For Educators
 
 
 #### Course Management
-- ✅ Create unlimited courses with rich descriptions
-- ✅ Upload course thumbnails and promotional materials
-- ✅ Set pricing, difficulty levels (Beginner/Intermediate/Advanced)
-- ✅ Publish/unpublish courses with one click
-- ✅ Track enrolled students and engagement metrics
+-  Create unlimited courses with rich descriptions
+-  Upload course thumbnails and promotional materials
+-  Set pricing, difficulty levels (Beginner/Intermediate/Advanced)
+-  Publish/unpublish courses with one click
+-  Track enrolled students and engagement metrics
 
 
 #### Content Delivery
-- ✅ Upload educational materials (PDFs, PPTs, Videos)
-- ✅ Create structured lectures with video content
-- ✅ Preview content before publishing
-- ✅ Organize materials by topics and modules
-- ✅ Cloud-based storage via Cloudinary
+-  Upload educational materials (PDFs, PPTs, Videos)
+-  Create structured lectures with video content
+-  Preview content before publishing
+-  Organize materials by topics and modules
+-  Cloud-based storage via Cloudinary
 
 
 #### Assessment Tools
-- ✅ Create assignments with flexible submission options
-- ✅ Support GitHub links and file uploads
-- ✅ Grade submissions using A-D scale
-- ✅ Provide detailed feedback to students
-- ✅ Monthly quizzes with rules and guidelines
+-  Create assignments with flexible submission options
+-  Support GitHub links and file uploads
+-  Grade submissions using A-D scale
+-  Provide detailed feedback to students
+-  Monthly quizzes with rules and guidelines
 
 
 #### Interactive Sessions
-- ✅ Schedule daily doubt-solving sessions
-- ✅ Share meeting links (Google Meet, Zoom, etc.)
-- ✅ Real-time voice rooms (ZegoCloud integration)
-- ✅ Weekend-only voice call availability
-- ✅ Manage student call requests
+-  Schedule daily doubt-solving sessions
+-  Share meeting links (Google Meet, Zoom, etc.)
+-  Real-time voice rooms (ZegoCloud integration)
+-  Weekend-only voice call availability
+-  Manage student call requests
 
 
-### 👨‍🎓 For Students
+###  For Students
 
 
 #### Learning Experience
-- ✅ Browse comprehensive course catalog
-- ✅ Enroll via secure Razorpay payment gateway
-- ✅ Access all course materials 24/7
-- ✅ Download resources for offline learning
-- ✅ Track learning progress with dashboard
+-  Browse comprehensive course catalog
+-  Enroll via secure Razorpay payment gateway
+-  Access all course materials 24/7
+-  Download resources for offline learning
+-  Track learning progress with dashboard
 
 
 #### Interactive Tools
-- ✅ **AI Chatbot** for instant doubt resolution (Google Gemini)
-- ✅ Submit assignments via multiple methods
-- ✅ View grades and instructor feedback
-- ✅ Participate in monthly quizzes
-- ✅ Join live voice rooms on weekends
+-  **AI Chatbot** for instant doubt resolution (Google Gemini)
+-  Submit assignments via multiple methods
+-  View grades and instructor feedback
+-  Participate in monthly quizzes
+-  Join live voice rooms on weekends
 
 
 #### Engagement & Rewards
-- ✅ Earn certificates upon course completion
-- ✅ Win voucher rewards for high quiz performance
-- ✅ Leave course reviews and ratings
-- ✅ Download resume templates
-- ✅ Gamification elements (confetti animations)
+- Earn certificates upon course completion
+-  Win voucher rewards for high quiz performance
+-  Leave course reviews and ratings
+-  Download resume templates
+-  Gamification elements (confetti animations)
 
 
-### 🛡️ For Administrators
+###  For Administrators
 
 
 #### Dashboard & Analytics
-- ✅ Real-time statistics (students, educators, revenue)
-- ✅ User activity feed and enrollment trends
-- ✅ Visual analytics with Recharts
-- ✅ Feedback and issue management
-- ✅ Voice room monitoring
-- ✅ Doubt session oversight
+-  Real-time statistics (students, educators, revenue)
+-  User activity feed and enrollment trends
+-  Visual analytics with Recharts
+-  Feedback and issue management
+-  Voice room monitoring
+-  Doubt session oversight
 
 
-### 🤖 Advanced Features
+###  Advanced Features
 
 
-- **🎙️ Real-Time Voice Rooms** -ZegoCloud UIKit SDK for pre-built voice room interface
-- **🧠 AI-Powered Chat** - Google Generative AI for instant doubt resolution for students only
-- **💳 Secure Payments** - Razorpay integration (Test Mode) with Order Status Verification
-- **🔐 Multi-Auth** - JWT, Google OAuth, OTP-based reset
-- **📱 Responsive Design** - Tailwind CSS with mobile-first approach
-- **🎨 Smooth Animations** - Framer Motion for enhanced UX
+- ** Real-Time Voice Rooms** -ZegoCloud UIKit SDK for pre-built voice room interface
+- ** AI-Powered Chat** - Google Generative AI for instant doubt resolution for students only
+- ** Secure Payments** - Razorpay integration (Test Mode) with Order Status Verification
+- ** Multi-Auth** - JWT, Google OAuth, OTP-based reset
+- ** Responsive Design** - Tailwind CSS with mobile-first approach
+- ** Smooth Animations** - Framer Motion for enhanced UX
 
 
 ---
 
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 
 ### Frontend
@@ -188,7 +188,7 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 ---
 
 
-## 🏗️ System Architecture
+##  System Architecture
 
 
 ```
@@ -231,7 +231,7 @@ Live Demo=https://jagat-acadamey-1-1.onrender.com
 ---
 
 
-## 📸 Screenshots
+##  Screenshots
 
 
 *Coming Soon - Screenshots of the application will be added here*
@@ -260,7 +260,7 @@ Before you begin, ensure you have the following installed:
 ### Installation
 
 
-#### 1️⃣ Clone the Repository
+#### Clone the Repository
 
 
 ```bash
@@ -269,7 +269,7 @@ cd jagat-acadamey---1
 ```
 
 
-#### 2️⃣ Backend Setup
+####  Backend Setup
 
 
 ```bash
@@ -293,7 +293,7 @@ npm run dev
 The backend server will start on `http://localhost:5000`
 
 
-#### 3️⃣ Frontend Setup
+####  Frontend Setup
 
 
 ```bash
@@ -403,7 +403,7 @@ jagat-acadamey---1/
 
 
 
-## 🌐 Deployment
+##  Deployment
 
 
 ### Backend Deployment (Render.com)
@@ -457,7 +457,7 @@ firebase deploy
 
 
 #
-## 🤝 Contributing
+##  Contributing
 
 
 Contributions are welcome! Here's how you can help:
@@ -496,7 +496,7 @@ Contributions are welcome! Here's how you can help:
 ---
 
 
-## 📄 License
+##  License
 
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
@@ -505,12 +505,12 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ### MIT License Summary
 
 
-✅ Commercial use allowed  
-✅ Modification allowed  
-✅ Distribution allowed  
-✅ Private use allowed  
-⚠️ No liability  
-⚠️ No warranty
+ Commercial use allowed  
+ Modification allowed  
+ Distribution allowed  
+ Private use allowed  
+ No liability  
+ No warranty
 
 
 ---
