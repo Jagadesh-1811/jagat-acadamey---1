@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files - NEVER commit these!
+.env
+.env.*
+*.env
+
+# Firebase service account keys - NEVER commit these!
+*firebase-adminsdk*.json
+*serviceAccount*.json
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
