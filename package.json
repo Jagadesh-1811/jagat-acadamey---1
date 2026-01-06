@@ -1,4 +1,12 @@
 {
+  "name": "jagat-academy-lms",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test -- --run",
+    "test:backend": "cd backend && npm test -- --run",
+    "test:watch": "cd frontend && npm test"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "framer-motion": "^12.23.24"
