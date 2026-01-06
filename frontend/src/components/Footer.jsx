@@ -123,8 +123,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-sm">
                 <PhoneOutlinedIcon sx={{ color: 'white', fontSize: 18 }} />
-                <a href="tel:+9182876543210" className="hover:text-white transition-colors">
-                  +91 828765 43210
+                <a href="tel:+917032789801" className="hover:text-white transition-colors">
+                  +91 70327 89801
                 </a>
               </li>
               <li className="flex items-start gap-3 text-gray-400 text-sm">

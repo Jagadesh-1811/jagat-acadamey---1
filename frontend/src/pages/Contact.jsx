@@ -20,9 +20,9 @@ const Contact = () => {
         {
             name: 'WhatsApp',
             icon: <FaWhatsapp className="w-6 h-6" />,
-            link: 'https://wa.me/919876543210',
+            link: 'https://wa.me/917032789801',
             color: 'bg-black',
-            handle: '+91 98765 43210'
+            handle: '+91 70327 89801'
         },
         {
             name: 'Instagram',
@@ -110,8 +110,8 @@ const Contact = () => {
                             </div>
                             <h3 className="text-2xl font-semibold text-gray-900 mb-3">Call Us</h3>
                             <p className="text-gray-600 mb-5 text-lg">Mon-Sat, 10am-5pm IST</p>
-                            <a href="tel:+919876543210" className="text-green-600 font-medium hover:underline text-lg">
-                                +91 98765 43210
+                            <a href="tel:+917032789801" className="text-green-600 font-medium hover:underline text-lg">
+                                +91 70327 89801
                             </a>
                         </div>
                     </div>

@@ -411,15 +411,7 @@ function EducatorLogin() {
                                 Sign up here
                             </span>
                         </p>
-                        <p className='text-center text-xs text-gray-400'>
-                            Are you a student?{' '}
-                            <span
-                                className='underline cursor-pointer hover:text-black'
-                                onClick={() => navigate("/login")}
-                            >
-                                Student Login
-                            </span>
-                        </p>
+
                     </div>
                 </div>
 
