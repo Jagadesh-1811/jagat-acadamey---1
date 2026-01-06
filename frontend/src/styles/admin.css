@@ -1,0 +1,429 @@
+/* Admin Panel Theme - Black & White with Interactivity */
+
+/* ===== CSS Variables ===== */
+:root {
+    --admin-black: #000000;
+    --admin-white: #ffffff;
+    --admin-gray-50: #fafafa;
+    --admin-gray-100: #f5f5f5;
+    --admin-gray-200: #e5e5e5;
+    --admin-gray-300: #d4d4d4;
+    --admin-gray-400: #a3a3a3;
+    --admin-gray-500: #737373;
+    --admin-gray-600: #525252;
+    --admin-gray-700: #404040;
+    --admin-gray-800: #262626;
+    --admin-gray-900: #171717;
+
+    /* Status Colors */
+    --admin-success: #22c55e;
+    --admin-success-bg: #dcfce7;
+    --admin-warning: #f59e0b;
+    --admin-warning-bg: #fef3c7;
+    --admin-error: #ef4444;
+    --admin-error-bg: #fee2e2;
+    --admin-info: #3b82f6;
+    --admin-info-bg: #dbeafe;
+
+    /* Transitions */
+    --admin-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --admin-transition-fast: all 0.15s ease-out;
+}
+
+/* ===== Animations ===== */
+@keyframes adminFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes adminSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes adminPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes adminShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes adminBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* ===== Admin Header ===== */
+.admin-header {
+    background: var(--admin-black);
+    color: var(--admin-white);
+    padding: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.admin-header-content {
+    max-width: 80rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.admin-header p {
+    color: var(--admin-gray-400);
+    font-size: 0.875rem;
+}
+
+/* ===== Admin Cards ===== */
+.admin-card {
+    background: var(--admin-white);
+    border-radius: 1rem;
+    border: 1px solid var(--admin-gray-200);
+    padding: 1.5rem;
+    transition: var(--admin-transition);
+    animation: adminFadeIn 0.4s ease-out;
+}
+
+.admin-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: var(--admin-black);
+}
+
+.admin-card-dark {
+    background: linear-gradient(135deg, var(--admin-black) 0%, var(--admin-gray-800) 100%);
+    color: var(--admin-white);
+    border: none;
+}
+
+.admin-card-dark:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Stat Cards ===== */
+.admin-stat-card {
+    background: var(--admin-white);
+    border-radius: 1rem;
+    border: 2px solid var(--admin-gray-100);
+    padding: 1.25rem;
+    transition: var(--admin-transition);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--admin-black);
+    transform: scaleY(0);
+    transition: var(--admin-transition);
+}
+
+.admin-stat-card:hover::before {
+    transform: scaleY(1);
+}
+
+.admin-stat-card:hover {
+    border-color: var(--admin-black);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.admin-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--admin-black);
+    line-height: 1;
+}
+
+.admin-stat-label {
+    font-size: 0.75rem;
+    color: var(--admin-gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+}
+
+/* ===== Admin Buttons ===== */
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: var(--admin-transition);
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.admin-btn-primary {
+    background: var(--admin-black);
+    color: var(--admin-white);
+}
+
+.admin-btn-primary:hover {
+    background: var(--admin-gray-800);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.admin-btn-primary:active {
+    transform: translateY(0);
+}
+
+.admin-btn-secondary {
+    background: var(--admin-white);
+    color: var(--admin-black);
+    border-color: var(--admin-gray-300);
+}
+
+.admin-btn-secondary:hover {
+    border-color: var(--admin-black);
+    background: var(--admin-gray-50);
+}
+
+.admin-btn-ghost {
+    background: transparent;
+    color: var(--admin-gray-600);
+}
+
+.admin-btn-ghost:hover {
+    background: var(--admin-gray-100);
+    color: var(--admin-black);
+}
+
+/* ===== Admin Tables ===== */
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-table thead {
+    background: var(--admin-gray-50);
+}
+
+.admin-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--admin-gray-600);
+    border-bottom: 2px solid var(--admin-gray-200);
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--admin-gray-100);
+    transition: var(--admin-transition-fast);
+}
+
+.admin-table tbody tr {
+    transition: var(--admin-transition-fast);
+}
+
+.admin-table tbody tr:hover {
+    background: var(--admin-gray-50);
+}
+
+.admin-table tbody tr:hover td {
+    border-bottom-color: var(--admin-black);
+}
+
+/* ===== Admin Forms ===== */
+.admin-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--admin-gray-200);
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    transition: var(--admin-transition);
+    background: var(--admin-white);
+}
+
+.admin-input:focus {
+    outline: none;
+    border-color: var(--admin-black);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-input:hover:not(:focus) {
+    border-color: var(--admin-gray-400);
+}
+
+.admin-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--admin-gray-700);
+    margin-bottom: 0.5rem;
+}
+
+.admin-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* ===== Status Badges ===== */
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.admin-badge-success {
+    background: var(--admin-success-bg);
+    color: var(--admin-success);
+}
+
+.admin-badge-warning {
+    background: var(--admin-warning-bg);
+    color: var(--admin-warning);
+}
+
+.admin-badge-error {
+    background: var(--admin-error-bg);
+    color: var(--admin-error);
+}
+
+.admin-badge-dark {
+    background: var(--admin-black);
+    color: var(--admin-white);
+}
+
+/* ===== Icon Containers ===== */
+.admin-icon-box {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--admin-transition);
+}
+
+.admin-icon-box:hover {
+    transform: scale(1.1);
+}
+
+.admin-icon-box-dark {
+    background: var(--admin-black);
+    color: var(--admin-white);
+}
+
+.admin-icon-box-light {
+    background: var(--admin-gray-100);
+    color: var(--admin-black);
+}
+
+/* ===== Interactive List Items ===== */
+.admin-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--admin-gray-200);
+    background: var(--admin-white);
+    transition: var(--admin-transition);
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+}
+
+.admin-list-item:hover {
+    border-color: var(--admin-black);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateX(4px);
+}
+
+.admin-list-item:active {
+    transform: translateX(2px);
+}
+
+/* ===== Loading States ===== */
+.admin-skeleton {
+    background: linear-gradient(90deg, var(--admin-gray-200) 25%, var(--admin-gray-100) 50%, var(--admin-gray-200) 75%);
+    background-size: 200% 100%;
+    animation: adminShimmer 1.5s infinite;
+    border-radius: 0.5rem;
+}
+
+/* ===== Responsive Utilities ===== */
+@media (max-width: 768px) {
+    .admin-header {
+        padding: 1rem;
+    }
+
+    .admin-card {
+        padding: 1rem;
+    }
+
+    .admin-stat-value {
+        font-size: 1.5rem;
+    }
+}
