@@ -110,8 +110,8 @@ const Contact = () => {
                             </div>
                             <h3 className="text-2xl font-semibold text-gray-900 mb-3">Call Us</h3>
                             <p className="text-gray-600 mb-5 text-lg">Mon-Sat, 10am-5pm IST</p>
-                            <a href="tel:+917032789801" className="text-green-600 font-medium hover:underline text-lg">
-                                +91 70327 89801
+                            <a href="tel:+918919548737" className="text-green-600 font-medium hover:underline text-lg">
+                                +91 8919548737
                             </a>
                         </div>
                     </div>
