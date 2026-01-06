@@ -24,7 +24,7 @@ export const createAssignment = async (req, res) => {
         // 4. Authorization: Check if the logged-in user is the creator of the course
         console.log("Debug Auth - Course Creator:", course.creator);
         console.log("Debug Auth - Logged In User:", loggedInUserId);
-        
+
         if (course.creator.toString() !== loggedInUserId.toString()) {
             console.log("Auth Failed: Mismatch between creator and logged-in user");
             return res.status(403).json({ message: "Forbidden. You are not the creator of this course." });
@@ -93,6 +93,47 @@ export const gradeAssignment = async (req, res) => {
 
     } catch (error) {
         console.error("Error in gradeAssignment controller:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An unexpected error occurred.",
+            error: error.message,
+        });
+    }
+};
+
+export const deleteAssignment = async (req, res) => {
+    try {
+        const { assignmentId } = req.params;
+        const loggedInUserId = req.userId;
+
+        // Find the assignment
+        const assignment = await Assignment.findById(assignmentId).populate('course');
+        if (!assignment) {
+            return res.status(404).json({ message: "Assignment not found." });
+        }
+
+        // Check if the logged-in user is the creator of the course
+        if (assignment.course.creator.toString() !== loggedInUserId.toString()) {
+            return res.status(403).json({ message: "Forbidden. You are not the creator of this course." });
+        }
+
+        // Remove assignment from course's assignments array
+        const course = await Course.findById(assignment.course._id);
+        course.assignments = course.assignments.filter(
+            (id) => id.toString() !== assignmentId
+        );
+        await course.save();
+
+        // Delete the assignment
+        await Assignment.findByIdAndDelete(assignmentId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Assignment deleted successfully.",
+        });
+
+    } catch (error) {
+        console.error("Error in deleteAssignment controller:", error);
         return res.status(500).json({
             success: false,
             message: "An unexpected error occurred.",

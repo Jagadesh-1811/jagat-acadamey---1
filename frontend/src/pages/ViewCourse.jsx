@@ -510,8 +510,18 @@ function ViewCourse() {
               return (
                 <div key={assignment._id} className="border p-4 rounded-lg mb-4">
                   <h3 className="text-lg font-semibold">{assignment.title}</h3>
-                  <p className="text-gray-600">{assignment.description}</p>
+                  {assignment.description && <p className="text-gray-600">{assignment.description}</p>}
                   <p className="text-sm text-gray-500">Deadline: {new Date(assignment.deadline).toLocaleString()}</p>
+                  {assignment.referenceLink && (
+                    <a
+                      href={assignment.referenceLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-black text-white px-4 py-2 rounded mt-3 transition-none text-sm"
+                    >
+                      View
+                    </a>
+                  )}
 
                   {studentGrade ? (
                     studentGrade.status === 'rejected' ? (

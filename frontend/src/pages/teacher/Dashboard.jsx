@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ArrowBackLongIcon from '@mui/icons-material/ArrowBack';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import { serverUrl } from '../../App';
 import { ClipLoader } from 'react-spinners';
@@ -35,6 +36,21 @@ function Dashboard() {
     const [feedback, setFeedback] = useState({}); // State to hold feedback for each submission
     const [submittingGrade, setSubmittingGrade] = useState(false);
     const [loadingSubmissions, setLoadingSubmissions] = useState(true);
+    const [deletedAssignments, setDeletedAssignments] = useState([]); // Track deleted assignments
+
+    const handleDeleteAssignment = async (assignmentId) => {
+        if (!window.confirm("Are you sure you want to delete this assignment? All submissions will also be removed.")) {
+            return;
+        }
+        try {
+            await axios.delete(`${serverUrl}/api/assignment/delete/${assignmentId}`, { headers: { Authorization: `Bearer ${token}` } });
+            setDeletedAssignments(prev => [...prev, assignmentId]);
+            toast.success("Assignment deleted successfully");
+        } catch (error) {
+            console.error("Error deleting assignment:", error);
+            toast.error(error.response?.data?.message || "Failed to delete assignment.");
+        }
+    };
 
 
     const handleGradeChange = (submissionId, value) => {
@@ -236,9 +252,17 @@ function Dashboard() {
                             {creatorCourseData?.map((course) => (
                                 <div key={course._id} className="mb-8">
                                     <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
-                                    {course.assignments?.map((assignment) => (
+                                    {course.assignments?.filter(a => !deletedAssignments.includes(a._id)).map((assignment) => (
                                         <div key={assignment._id} className="border p-4 rounded-lg mb-4">
-                                            <h4 className="text-md font-semibold">{assignment.title}</h4>
+                                            <div className="flex items-center justify-between mb-2">
+                                                <h4 className="text-md font-semibold">{assignment.title}</h4>
+                                                <button
+                                                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1 text-sm"
+                                                    onClick={() => handleDeleteAssignment(assignment._id)}
+                                                >
+                                                    <FaTrash /> Remove
+                                                </button>
+                                            </div>
                                             <ul className="list-disc pl-6 mt-2">
                                                 {submissions[assignment._id]?.map((submission) => (
                                                     submission && (

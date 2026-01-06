@@ -51,6 +51,7 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import EducatorLogin from './pages/educator/EducatorLogin';
 import EducatorSignUp from './pages/educator/EducatorSignUp';
 import EducatorApprovals from './pages/admin/EducatorApprovals';
+import AuthProvider from './components/AuthProvider';
 
 
 // Admin Route Protection Component
@@ -74,6 +75,8 @@ function App() {
   getAllReviews()
   return (
     <>
+      {/* Firebase Auth Token Refresh Provider */}
+      <AuthProvider />
 
       <ToastContainer />
       <ScrollToTop />

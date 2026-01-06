@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { serverUrl } from '../../config';
 import { toast } from 'react-toastify';
-import { FaArrowLeft, FaEdit } from 'react-icons/fa';
+import { FaArrowLeft, FaEdit, FaTrash } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 import { useSelector } from 'react-redux';
 
@@ -28,6 +28,20 @@ function Assignments() {
         };
         fetchAssignments();
     }, [courseId, token]);
+
+    const handleDeleteAssignment = async (assignmentId) => {
+        if (!window.confirm("Are you sure you want to delete this assignment?")) {
+            return;
+        }
+        try {
+            await axios.delete(`${serverUrl}/api/assignment/delete/${assignmentId}`, { headers: { Authorization: `Bearer ${token}` } });
+            setAssignments(assignments.filter(a => a._id !== assignmentId));
+            toast.success("Assignment deleted successfully");
+        } catch (error) {
+            console.error("Error deleting assignment:", error);
+            toast.error(error.response?.data?.message || "Failed to delete assignment.");
+        }
+    };
 
     if (loading) {
         return (
@@ -60,7 +74,7 @@ function Assignments() {
                         <div key={assignment._id} className="bg-gray-50 p-4 rounded-md shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center">
                             <div>
                                 <h3 className="text-lg font-medium">{assignment.title}</h3>
-                                <p className="text-gray-600 text-sm">{assignment.description}</p>
+                                {assignment.description && <p className="text-gray-600 text-sm">{assignment.description}</p>}
                                 <p className="text-gray-500 text-xs">Deadline: {new Date(assignment.deadline).toLocaleString()}</p>
                             </div>
                             <div className="flex gap-3 mt-3 md:mt-0">
@@ -70,7 +84,14 @@ function Assignments() {
                                 >
                                     <FaEdit /> Edit
                                 </button>
-                            </div>                        </div>
+                                <button
+                                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1 text-sm"
+                                    onClick={() => handleDeleteAssignment(assignment._id)}
+                                >
+                                    <FaTrash /> Remove
+                                </button>
+                            </div>
+                        </div>
                     ))}
                 </div>
             )}

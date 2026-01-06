@@ -15,7 +15,6 @@ function CreateAssignment() {
     const { token } = useSelector(state => state.user);
 
     const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
     const [referenceLink, setReferenceLink] = useState("")
     const [deadline, setDeadline] = useState("")
 
@@ -24,7 +23,7 @@ function CreateAssignment() {
         try {
             const { data } = await axios.post(
                 serverUrl + `/api/assignment/create/${courseId}`,
-                { title, description, referenceLink, deadline },
+                { title, referenceLink, deadline },
                 { headers: { Authorization: `Bearer ${token}` } }
             )
             toast.success("Assignment Created")
@@ -58,18 +57,7 @@ function CreateAssignment() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea
-                            rows="4"
-                            className="w-full p-3 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:outline-none"
-                            placeholder="Describe the assignment requirements..."
-                            onChange={(e) => setDescription(e.target.value)}
-                            value={description}
-                        ></textarea>
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Reference Link (Optional)</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Reference Link (Google Docs, Drive, etc.)</label>
                         <input
                             type="text"
                             className="w-full p-3 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:outline-none"
