@@ -64,7 +64,7 @@ const AdminProtectedRoute = ({ children }) => {
 };
 
 
-export const serverUrl = "http://localhost:8000"
+export const serverUrl = "https://jagat-acadamey-1.onrender.com"
 function App() {
 
   let { userData } = useSelector(state => state.user)
