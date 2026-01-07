@@ -39,8 +39,8 @@ function EditLecture() {
       navigate("/courses")
       setLoading(false)
     } catch (error) {
-      console.log(error)
-      toast.error(error.response?.data?.message || "Failed to edit lecture.")
+      console.error("Edit lecture error:", error);
+      toast.error(error.response?.data?.message || error.message || "Failed to edit lecture.");
       setLoading(false)
     }
   };
